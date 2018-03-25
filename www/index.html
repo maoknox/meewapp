@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />-->
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+    -->
+     <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" />--> 
+    
+    <!--<link rel="stylesheet" href="css/framework7.css" >-->
+    <link rel="stylesheet" href="lib/css/framework7.css">
+    <!--<link rel="stylesheet" href="style.css">-->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/framework7-icons.css"  />
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/css/swiper.css">
+    <link href="css/swipebox.css" rel="stylesheet" type="text/css"/>
+    <!--<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/css/swiper.min.css">-->
+    <title>Meew</title>
+</head>
+
+<body >
+    <div class="login-screen">
+        <div class="view"> 
+            <div class="page-login">
+                <div class="page-content login-screen-content">
+                    <form id="form-login">
+                        <div class="list-block">
+                            <div class="div-login">      
+                                <div class="item-title label">Usuario</div>
+                                <div class="input-login" >
+                                    <input name="usuario" placeholder="Tu nombre de usuario" type="text" autocapitalize="off" >
+                                </div><br>
+                                <div class="item-title label">Clave</div>
+                                <div class="input-login">
+                                    <input name="password" placeholder="Tu contraseña" type="password">
+                                </div>
+                            </div>  
+                        </div>
+                        <div class="list-block">
+                            <div class="div-login"> 
+                            
+                                <div class="row align-items-meew"  ><div class=" ini-text"><a href="#" class="swiper_read_more link-loginii">INGRESAR</a><a href="#" class="swiper_read_more  link-volver">VOLVER</a></div></div>
+                                <div class="list-block-label" >
+                                    <div class="row align-items-meew" >
+                                        <div class="col-50 label-secondary">ó ingresa con:</div>
+                                    <div class="col-25perc" ><img src="images/loginfacebook.png" alt="" style="width: 100%;cursor: pointer;" class="loginfb" /></div>
+                                    <div class="col-25perc" ><img src="images/logingoogle.png" alt="" style="width: 100%;"/></div>
+                                </div>
+                            </div>
+                            </div>
+                            
+                            <div class="list-block-label" style="margin:0px auto">
+                                <img src="images/general/imagenheader.fw.png" alt="" style="width: 100%;"/>
+                                
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar-overlay"></div>
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>
+    <!-- Left panel with reveal effect-->
+    <div class="panel panel-left panel-reveal">
+      <div class="content-panel-left ">
+        <div class="row" >
+            <div class="col-100 " style="margin: 0px auto;border-radius: 50%; width: 200px;height: 200px;border:1px solid #ef8913;"><img src="images/products/Perfil.svg"    alt="" title="" /></div>
+        </div>  
+          <br>
+        <div class="row">
+            <div class="col-100 " style="text-align: center; color: #155067; font-size: 20px" >Felipe Barreto</div>
+        </div>  
+        <br>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-20 " ><img src="images/menu/persona.fw.png"    alt="" title="" /></div>
+            <div class="col-80 " style="padding-top:10px; color: #155067">Perfil</div>
+        </div>
+        <div class="row" style="padding-top:5px;padding-bottom:10px;"><div class="col-100" style="border-top: 2px solid #C7CD4D"></div></div>
+        <div class="row">
+            <div class="col-20 " ><img src="images/menu/tyc.fw.png"    alt="" title="" /></div>
+            <div class="col-80 " style="padding-top:10px; color: #155067">Términos y condiciones</div>
+        </div>
+        <div class="row" style="padding-top:5px;padding-bottom:10px;"><div class="col-100" style="border-top:2px solid #C7CD4D"></div></div>
+        <div class="row">
+            <div class="col-20 " ><img src="images/menu/sesion.fw.png"    alt="" title="" /></div>
+            <div class="col-80 " style="padding-top:10px; color: #155067" id="cerrarSesion">Cerrar sesión</div>
+        </div>
+        <div class="row" style="padding-top:5px;padding-bottom:10px;"><div class="col-100" style="border-top:2px solid #C7CD4D"></div></div>
+        <div class="row">
+            <div class="col-20 " >--</div>
+            <div class="col-80 " style="padding-top:10px; color: #155067"><a href="#" class="salir" style="color:#155067">Salir</a></div>
+        </div>
+        <div class="row" style="padding-top:5px;padding-bottom:10px;"><div class="col-100" style="border-top:2px solid #C7CD4D"></div></div>
+      </div>
+    </div>
+    <!-- Right panel with cover effect-->
+    <div class="panel panel-right panel-cover">
+      <div class="content-block">
+        <p>Right panel content goes here</p>
+      </div>
+    </div>
+<div class="views tabs toolbar-through">
+    <div id="view-1" class="view view-main tab active">
+          <div class="navbar">
+            <div class="navbar-inner">
+                <div class="center sliding"><span class="navbar-logo"></span></div>
+                <div class="right">
+                    <a href="#" class="link icon-only open-panel bars-pers">
+                        <i class="f7-icons size-50 color-custom">bars</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Pages-->
+        <div class="pages">
+            <!-- Page, data-page contains page name-->
+            <div data-page="list" class="page main-page">
+                
+            </div>
+        </div>
+      </div>
+<!--    <div id="view-2" class="view tab">
+        
+       <div class="navbar">
+          <div class="navbar-inner">
+            <div class="center sliding"><span class="navbar-logo"></span></div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+            <div data-page="planes" class="page planes-page">
+
+            </div>
+        </div>
+      </div>-->
+<!--      <div id="view-3" class="view tab">
+          <div class="navbar">
+          <div class="navbar-inner">
+            <div class="center sliding"><span class="navbar-logo"></span></div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="facturacion" class="page facturacion-page">
+            
+          </div>
+        </div>
+      </div>-->
+      
+      <!-- Bottom Tabbar-->
+        <div class="toolbar tabbar tabbar-labels">
+            <div class="toolbar-inner">
+                <a href="#view-1" class="tab-link active view-1"> 
+                    <i class="f7-icons size-50 color-custom">home</i><span class="tabbar-label">Home</span>
+                </a>
+<!--            <a href="#view-2" class="tab-link">
+                    <i class="f7-icons size-50 color-custom">add_round_fill</i><span class="tabbar-label">Facturación</span>
+                    <i class="icon tabbar-demo-icon-2"></i><span class="tabbar-label">Planes</span>
+                </a>
+
+
+                <a href="#" class="tab-link"> 
+                    <i class="icon tabbar-demo-icon-3"></i><span class="tabbar-label">Facturación</span>
+                </a>-->
+            </div>
+        </div>
+</div>
+<div class="popup popup-about">
+    <div class="page-content login-screen-content">
+        <div class="list-block">
+            <div class="list-block-label" style="margin: 25% 0px 0px 0px">
+                <img src="images/startlogin/icon_418489.jpg" style="width: 80%">
+            </div>
+        </div>
+        <div class="list-block">
+            <div class="div-login"> 
+                <div class=" ini-text"><a href="#" class="swiper_read_more  link-register">REGÍSTRATE</a></div>
+                <div class=" ini-text">ó inicia sesión <a href="#" class=" ini-text-link  close-popupi">aquí</a></div>
+            </div>
+        </div>
+    </div>
+</div><!-- Services Popup -->
+<div class="popup popup-services" style="padding-bottom:50px ">
+    <div class="navbar">
+        <div class="navbar-inner">
+          <div class="left"><a href="#" class="back link close-popup"> <i class="icon icon-back"></i><span>Back</span></a></div>
+          <div class="center sliding">COMPARTE EN REDES</div>
+          <div class="right">
+              <!--<a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>-->
+          </div>
+        </div>
+    </div>
+    <div class="content-block">
+      <div class="row" style="text-align: left;  padding-top: 20px; color: #fff;">
+          Selecciona la red social por la cual quieres compartir este contenido.
+      </div>
+      <div class="row" style="text-align: left; padding-top: 50px; padding-left: 10px; color: #155067;">
+          <div class="col-30perc"><img src="images/viral/Facebook.fw.svg" style="width: 100%"></div>
+          <div class="col-30perc"><img src="images/viral/Instagram.fw.svg" style="width: 100%"></div>
+          <div class="col-30perc"><img src="images/viral/Twitter.fw.svg" style="width: 100%"></div>
+      </div>
+    </div>
+    <div class="row box-wrapper-iiid" style="padding-bottom: 0px; margin-bottom: 0px; align-items: baseline"> 
+        <div class="link-prodsii">   
+            <ul style="margin:0px 60px;">
+                <li><a href="#" class="close-popup">CERRAR</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- Register Popup -->
+    <div class="popup popup-register" style="padding-bottom:50px ">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="left"><a href="#" class="link popback-register"> <i class="icon icon-back"></i><span>Back</span></a></div>
+                <div class="center sliding">REGISTRO</div>
+                <div class="right">
+                  <a href="#" class="link icon-only"></a>
+                </div>
+            </div>
+        </div>
+        <div class="pages" id="contact">
+            <div data-page="contacto" style="height: 100%" >
+                <div class="page-content-serv">
+                    <div class="content-block-clserv">
+                        <div class="list-block-contact">
+                            <form id="fomr-serv">
+                                
+                                <div class="row box-wrapper-iiid" style="padding-bottom: 0px; margin-bottom: 0px; align-items: baseline"> 
+                                    <div class="link-prodsii">   
+                                        <ul style="margin:0px 60px;">
+                                            <li><a href="#" id="creaCuenta" class="creaCuenta">Crear Cuenta</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="fb-root"></div>
+    <script type="text/javascript" src="cordova.js"></script>
+     <script type="text/javascript" src="js/index.js"></script>
+     <script type="text/javascript">
+         app.initialize(); 
+     </script>
+     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDT9BgFSTCCAxMtteEZAavsw3NPfgxdjRc" type="text/javascript"></script>  
+     <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+     <script src="js/jquery.validate.min.js"  type="text/javascript"></script>
+     <script src="js/phonegap.facebook.inappbrowser.js"></script>
+     <script type="text/javascript" src="js/jquery.swipebox.js" ></script>
+     <script type="text/javascript" src="js/jquery.fitvids.js" ></script>
+     <script type="text/javascript" src="js/email.js" ></script>
+     <script type="text/javascript"  src="http://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/js/swiper.js"></script>
+        <!--<script type="text/javascript"  src="http://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/js/swiper.min.js"></script>-->
+        <!--<script type="text/javascript"  src="http://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/js/swiper.esm.js"></script>-->
+        <!--<script type="text/javascript"  src="http://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/js/swiper.esm.bundle.js"></script>-->
+     
+    </body>
+</html>
+<script type="text/javascript" src="js/framework7.js"></script>
+<script data-main="app" src="lib/require.js"></script>
