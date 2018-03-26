@@ -38,7 +38,7 @@ define(['hbs!js/container/gallerylbm','hbs!js/container/containerlbm','hbs!js/co
         //        $('.imagesgallery').html("imagesgallery");
         //        $('.videosgallery').html("videosgallery"); 
                 var imagenes="";
-                var videos="";console.log(data.img+"--- ");
+                var videos="";//console.log(data.img+"--- ");
                 var stClass="photo_gallery_1";
                 if(data.img==2){
                     stClass="photo_gallery_12";
@@ -94,11 +94,12 @@ define(['hbs!js/container/gallerylbm','hbs!js/container/containerlbm','hbs!js/co
                 break;
             case "4":
                 $('.planes-page'+params.id+' .page-content-views').html(viewContacto);
-                $('.nombre').text(localStorage.getItem('personanombre'));
-                initialize();
+//                $('.nombre').text(localStorage.getItem('personanombre'));
+//                initialize();
+console.log(data.content);
                 break;
             case "5":
-                console.log(data.content);
+//                console.log(data.content);
                 var opciones='<option value="">Seleccione...</option>';
                  $.each(data.content,function(key,value){
                         opciones+='<option value="'+value.idtema_soporte+'">'+value.titulo+'</option>';

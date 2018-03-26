@@ -2536,7 +2536,7 @@ html:not(.watch-active-state) .chip-delete:active,
   box-sizing: border-box;
 }
 .content-block-clserv {
-  margin: 0 0;
+  margin-bottom: 70px;
   padding: 0 0;
   background-color: #fff;
   box-sizing: border-box;

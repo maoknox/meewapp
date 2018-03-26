@@ -4,7 +4,7 @@ define(["js/loadbmenu/loadbmenuView"], function(LoadbmenuView) {
 //    var contact = null;
  
     function init(query){//query
-        console.log(JSON.stringify(query));
+//        console.log(JSON.stringify(query));
 //        var contacts = tempInitializeStorage();
 //        alert(query.idmod)
             LoadbmenuView.render({

@@ -58,7 +58,7 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
             loop:true
         });
     var contentM="";
-    console.log(retrivedContent+"--------------------------------------------------------------------");
+//    console.log(retrivedContent+"--------------------------------------------------------------------");
         $.each(JSON.parse(retrivedContent),function(k,v){
             contentM=' <div class="swiper-slide">'+
 //                        '<div class="content-block-title">'+v.nombre_modulo+'</div>'+

@@ -51,7 +51,7 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
 //        router: Router
     };
     $(".loadcontent").on('click',function(){
-        console.log("load");
+//        console.log("load");
     });
     localStorage.setItem("pagina",0);
     localStorage.setItem('email', "");
@@ -67,7 +67,7 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
         });
     });
     $$('.loginfb').on('click',function(){
-        console.log("entra a login facebook");
+//        console.log("entra a login facebook");
         f7.showPreloader();
         FacebookInAppBrowser.login({
             send: function() {
@@ -150,7 +150,7 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
                 before: f7.showPreloader(),
                 success: function(data) {
 //                    Router.init();
-                    console.log(JSON.stringify(data)+"------------|||||----------------");
+//                    console.log(JSON.stringify(data)+"------------|||||----------------");
 //                    var retrivedContent=localStorage.getItem('content');
 //                    console.log(JSON.parse(retrivedContent));
                     
@@ -190,7 +190,7 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
     function cargaMenuBottom(contmb,colorIcon,color){
         var number=3;
         var contmbAux=JSON.parse(contmb);
-        console.log(contmbAux);
+//        console.log(contmbAux);
         
         $.each(contmbAux,function(key,v){
 //            number=number+1;
@@ -240,7 +240,7 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
         
         $(".view-"+n).on('click',function(){
             $('.tab-link').css('color',colorIcon);
-                console.log("pasa a vista "+n);
+//                console.log("pasa a vista "+n);
                 $(".view-"+n).css('color',"#fff");
 //                $('.toolbar').css('background',color);
                 if(n==1){
@@ -350,7 +350,7 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
                     f7.hidePreloader();
                     f7.alert(data.msg);
                     if(data.status=='exito'){
-                        console.log(contact.Usuario["email"]);
+//                        console.log(contact.Usuario["email"]);
                         localStorage.setItem('email', contact.Usuario["email"]);
                         f7.closeModal(".popup-register",false);
                     }

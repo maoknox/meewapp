@@ -91,10 +91,14 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
             case "4":
                 $('.container-page').html(viewContacto);
                 $('.nombre').text(localStorage.getItem('personanombre'));
-                initialize();
+                $("#emailpersona").text(data.content.correo_contacto);
+                $("#celularpersona").text(data.content.telefono);
+                $("#address").text("  "+data.content.direccion);
+                console.log(data.content);
+                initializeMap(data.content);
                 break;
             case "5":
-                console.log(data.content);
+//                console.log(data.content);
                 var opciones='<option value="">Seleccione...</option>';
                  $.each(data.content,function(key,value){
                         opciones+='<option value="'+value.idtema_soporte+'">'+value.titulo+'</option>';
@@ -114,9 +118,9 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
 //        });
         
     }
-    function initialize() { // define function
-        var latitud="40.639409";
-        var longitud="-73.897900";
+    function initializeMap(dataM) { // define function
+        var latitud=dataM.latitud;
+        var longitud=dataM.longitud;
         var mapProp = {
           center: new google.maps.LatLng(latitud, longitud),
           zoom: 5,
@@ -133,7 +137,7 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
           if (status === 'OK') {
             if (results[1]) {
     //            console.log(JSON.stringify(results[1]["formatted_address"]));
-                $("#address").text(results[1]["formatted_address"]);
+//                $("#address").text(results[1]["formatted_address"]);
               map.setZoom(11);
                 var marker = new google.maps.Marker({
                   position: latlng,

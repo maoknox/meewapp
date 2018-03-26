@@ -8,7 +8,7 @@ define(['hbs!js/list/contact-list-item'], function(template) {
               +'</div>'
             +'</div>';
         var retrivedContent=localStorage.getItem('content');
-                    console.log(JSON.parse(retrivedContent));
+//                    console.log(JSON.parse(retrivedContent));
     var contenido='';
         $.each(JSON.parse(retrivedContent),function(k,v){
              contenido+='<li>'
