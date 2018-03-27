@@ -270,39 +270,40 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
         f7.popup('.popup-about',false); 
         f7.closeModal(".popup-register",false);  
     });
-    $$('.link-register').on('click', function () {
+    $$('.link-register').on('click', function () {       
         f7.popup('.popup-register',false); 
-        $("#fomr-serv").validate({
-            rules: {
-                "persona_nombre": "required",
-                "persona_apellidos":"required",
-                "usuario":"required",
-                "password":"required",
-                "persona_correo":{
-                    required: true,
-                    email: true
-                },
-                "repassword":{
-                    equalTo: "#password"
-                },
-                "phone":"required",
-//                "accept":"required"
-            },
-            messages: {
-                "persona_nombre": "El nombre es requerido",
-                "persona_apellidos":"El apellido es requerido",
-                "usuario":"El nombre de usuario es requerido",
-                "password":"La contraseña es requerida",
-                "persona_correo":{
-                    required: "El correo es requerido",
-                    email: "Debe digitar un correo válido ej: xyz@dominio.com"
-                },
-                "repassword":{
-                    equalTo: "La confirmación de la contraseña no coincide con la contraseña"
-                },
-                "phone":"Número de teléfono es requerido",
-//                "accept":"Debe aceptar los términos y condiciones."
-            }});
+        $("#fomr-serv").validate();
+        $.each(JSON.parse(localStorage.getItem('campos_form')),function(key,value){
+            if(value.activo==1){
+                if(key!='rango_edad' && key!='genero' && key!='politicas_privacidad_activo'){
+                    $('.popup-register #inputs-reg').append('<div class="input-login" ><input name="'+key+'" id="'+key+'" placeholder="'+value.label+'" type="text"  ></div><br>');
+                }
+                else{
+                    if(key=='politicas_privacidad_activo'){
+                        $('.popup-register #inputs-reg').append('<div class="input-login" ><label class="labelerr">Acepta términos y condiciones?</label></div><br>');                                                                        
+                        $('.popup-register #inputs-reg').append('<div class="input-login" ><label><input type="checkbox" name="'+key+'" id="'+key+'_si" value="1">Si</label></div><br>');                                                
+                        $('.popup-register #inputs-reg').append('<div class="input-login" ><label><input type="checkbox" name="'+key+'" id="'+key+'_no" value="0">No</label></div><br>'); 
+                    
+                    }else {
+                        $('.popup-register #inputs-reg').append('<div class="input-login" ><select name="'+key+'" id="'+key+'" ><option value="">Seleccione '+value.label+'...</option></select></div><br>');                        
+                        $.each(JSON.parse(localStorage.getItem('parametros')),function(keypar,valuepar){
+                            if(key=="rango_edad" && valuepar.tipo=="rango_edad"){
+                                $("#"+key).append("<option value='"+valuepar.idparametros+"'>"+valuepar.nombre+"</option>");
+                            }
+                            else if(key=="genero" && valuepar.tipo=="genero"){
+                                $("#"+key).append("<option value='"+valuepar.idparametros+"'>"+valuepar.nombre+"</option>");
+                            }
+
+                        });
+                    }
+
+                }
+                
+                $("[name="+key+"]").rules("add",{required: true,messages:{required:"Campo requerido"}});
+            }
+         });
+        
+        
         $$(".creaCuenta").on("click", registerUser);
         f7.closeModal(".popup-about",false);  
     });
@@ -329,19 +330,19 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
     function registerUser(){
         if ($("#fomr-serv").valid()) {
             contact = new Contact();
-            var formInput = f7.formToJSON('#fomr-serv');
-            contact.setValues(formInput);
+            var formInput = $('#fomr-serv').serialize();
+//            contact.setValues(formInput);
 //            f7.alert(contact.Usuario["accept"]);
 //            return false;
-            if (!contact.validate()) {
-                f7.alert("Debe aceptar los términos y condiciones");
-                return;
-            }
-            var datos=JSON.stringify(contact);
+//            if (!contact.validate()) {
+//                f7.alert("Debe aceptar los términos y condiciones");
+//                return;
+//            }
+            var datos=formInput;
             $.ajax({
                 url: 'http://meew.co/dashmeew/index.php/site/registerPlatformMovile',
                 dataType: 'json',
-                data:JSON.parse(datos),
+                data:datos,
                 type: 'post',
                 async:true,
                 crossDomain : true,

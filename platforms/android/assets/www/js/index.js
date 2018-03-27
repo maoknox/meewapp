@@ -58,25 +58,46 @@ var app = {
                 crossDomain : true,
 //                before: progress.show(),
                 success: function(data) {
+                    console.log(data);
+                    
                     var parametros=data.parametros;
+                    var camposForm=data.campo_registro;
+                    var loginRs=data.login_rs;
+                    if(typeof loginRs !== 'undefined'){
+                        var logo="";
+                        var rsocial="";
+                        console.log(typeof loginRs !== 'undefined');
+                        
+                        $.each(loginRs,function(keyrs,valrs){
+                            logo="";
+                            if(valrs==1){
+                                $(".ingreso-rs").css("display","block");
+                                switch(keyrs){
+                                    case "login_facebook":
+                                        logo="loginfacebook.png";
+                                        rsocial="loginfb";           
+                                        break;
+                                    case "login_facebook":
+                                        logo="logingoogle.png";
+                                        rsocial="logingl";           
+                                        break;
+
+                                }
+                                $(".ingreso-rs-logos").append('<div class="col-25perc" ><img src="images/'+logo+'" alt="" style="width: 100%;cursor: pointer;" class="'+rsocial+'" /></div>');
+                            }
+                        });
+                    }
                     data=data.estilos;
-                    var camposForm={"login_facebook":data.login_facebook};
-                    camposForm["facebook"]=data.facebook;
-                    camposForm["twitter"]=data.twitter;
-                    camposForm["instagram"]=data.instagram;
-                    camposForm["nombre_activo"]=data.nombre_activo;
-                    camposForm["apellido_activo"]=data.apellido_activo;
-                    camposForm["celular_activo"]=data.celular_activo;
-                    camposForm["politicas_privacidad_activo"]=data.politicas_privacidad_activo;
-                    camposForm["nombre_usuario_activo"]=data.nombre_usuario_activo;
-                    camposForm["genero"]=data.genero;
-                    camposForm["rango_edad"]=data.rango_edad;
                     localStorage.setItem('campos_form',JSON.stringify(camposForm));
+                    localStorage.setItem('login_rs',JSON.stringify(loginRs));
+                    localStorage.setItem('parametros',JSON.stringify(parametros));
+//                    console.log(localStorage.getItem('campos_form'));
+//                    console.log(camposForm);
+                    
                     
                     
                     localStorage.setItem('color',data.color);
-                    localStorage.setItem('color_icon',data.color_icon);
-//                    cargaFormRegistro();
+                    localStorage.setItem('color_icon',data.color_icon); 
         
 //                   $('.login-screen-content').css('background',data.color);
 //                   $('.login-screen').css('background',data.color);

@@ -3483,13 +3483,21 @@ html.ios-gt-8 .contacts-block .list-group-title {
     padding: 0px;
     box-shadow: -1px -1px 3px #fff;
 }
-.list-block-contact .input-login input[type="text"],input[type="password"],textarea
+
+.list-block-contact .input-login input[type="text"],
+.list-block-contact .input-login input[type="password"],
+.list-block-contact .input-login textarea,
+.list-block-contact .input-login select
 {
     color: #C0C0C0;
     border:1px solid #C6CC49;
     border-radius: 6px;
     padding: 10px;
     width: 100%;
+}
+
+.list-block-contact labelerr{
+     color: #C6CC49;
 }
 .label-secondary{
     color:#fff;
