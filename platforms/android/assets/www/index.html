@@ -44,10 +44,10 @@
     <!--<link rel="stylesheet" href="css/framework7.css" >-->
     <link rel="stylesheet" href="lib/css/framework7.css">
     <!--<link rel="stylesheet" href="style.css">-->
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
     <link rel="stylesheet" type="text/css" href="css/framework7-icons.css"  />
-    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/css/swiper.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.0/css/swiper.css">
     <link href="css/swipebox.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
     <!--<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/css/swiper.min.css">-->
     <title>Meew</title>
 </head>
@@ -71,16 +71,12 @@
                             </div>  
                         </div>
                         <div class="list-block">
-                            <div class="div-login"> 
-                            
+                            <div class="div-login">                             
                                 <div class="row align-items-meew"  ><div class=" ini-text"><a href="#" class="swiper_read_more link-loginii">INGRESAR</a><a href="#" class="swiper_read_more  link-volver">VOLVER</a></div></div>
-                                <div class="list-block-label" >
-                                    <div class="row align-items-meew ingreso-rs" style="display:none">
+                                <div class="list-block-label" id="ingreso-rs" style="display:none" >
+                                    <div class="row align-items-meew"  >
                                         <div class="col-50 label-secondary" >ó ingresa con:</div>
-                                        <div class="ingreso-rs-logos">
-                                    <!--<div class="col-25perc" ><img src="images/loginfacebook.png" alt="" style="width: 100%;cursor: pointer;" class="loginfb" /></div>-->
-                                    <!--<div class="col-25perc" ><img src="images/logingoogle.png" alt="" style="width: 100%;"/></div>-->
-                                    </div>
+                                        <div class="col-50 " id="icon-rs" ></div>
                                     </div>
                                 </div>
                             </div>
@@ -102,12 +98,9 @@
     <!-- Left panel with reveal effect-->
     <div class="panel panel-left panel-reveal">
       <div class="content-panel-left ">
-        <div class="row" >
-            <div class="col-100 " style="margin: 0px auto;border-radius: 50%; width: 200px;height: 200px;border:1px solid #ef8913;"><img src="images/products/Perfil.svg"    alt="" title="" /></div>
-        </div>  
-          <br>
+        
         <div class="row">
-            <div class="col-100 " style="text-align: center; color: #155067; font-size: 20px" >Felipe Barreto</div>
+            <div class="col-100 " style="text-align: center; color: #155067; font-size: 20px" id="nombre-usuario" ></div>
         </div>  
         <br>
         <br>
@@ -124,13 +117,9 @@
         <div class="row" style="padding-top:5px;padding-bottom:10px;"><div class="col-100" style="border-top:2px solid #C7CD4D"></div></div>
         <div class="row">
             <div class="col-20 " ><img src="images/menu/sesion.fw.png"    alt="" title="" /></div>
-            <div class="col-80 " style="padding-top:10px; color: #155067" id="cerrarSesion">Cerrar sesión</div>
+            <div class="col-80 " style="padding-top:10px; color: #155067" id="cerrarSesion"><a href="#" >Cerra sesión</a></div>
         </div>
-        <div class="row" style="padding-top:5px;padding-bottom:10px;"><div class="col-100" style="border-top:2px solid #C7CD4D"></div></div>
-        <div class="row">
-            <div class="col-20 " >--</div>
-            <div class="col-80 " style="padding-top:10px; color: #155067"><a href="#" class="salir" style="color:#155067">Salir</a></div>
-        </div>
+        
         <div class="row" style="padding-top:5px;padding-bottom:10px;"><div class="col-100" style="border-top:2px solid #C7CD4D"></div></div>
       </div>
     </div>
@@ -208,12 +197,12 @@
     <div class="page-content login-screen-content">
         <div class="list-block">
             <div class="list-block-label" style="margin: 25% 0px 0px 0px">
-                <img src="images/startlogin/icon_418489.jpg" style="width: 80%">
+                <img src="img/login.png" style="width: 80%">
             </div>
         </div>
         <div class="list-block">
             <div class="div-login"> 
-                <div class=" ini-text"><a href="#" class="swiper_read_more  link-register">REGÍSTRATE</a></div>
+                <div class=" ini-text"><a href="#" class="swiper_read_more  link-register">Regístrate</a></div>
                 <div class=" ini-text">ó inicia sesión <a href="#" class=" ini-text-link  close-popupi">aquí</a></div>
             </div>
         </div>
@@ -294,10 +283,10 @@
      <script type="text/javascript" src="js/jquery.swipebox.js" ></script>
      <script type="text/javascript" src="js/jquery.fitvids.js" ></script>
      <script type="text/javascript" src="js/email.js" ></script>
-     <script type="text/javascript"  src="http://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/js/swiper.js"></script>
-        <!--<script type="text/javascript"  src="http://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/js/swiper.min.js"></script>-->
-        <!--<script type="text/javascript"  src="http://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/js/swiper.esm.js"></script>-->
-        <!--<script type="text/javascript"  src="http://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/js/swiper.esm.bundle.js"></script>-->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.0/js/swiper.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.0/js/swiper.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.0/js/swiper.esm.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.0/js/swiper.esm.bundle.js"></script>
      
     </body>
 </html>

@@ -16,6 +16,7 @@ define(['hbs!js/container/gallerylbm','hbs!js/container/containerlbm','hbs!js/co
 //                    $('.container-page').html(data.content);
 
                     f7.hidePreloader();
+                    $('.navbar-inner').css('background-color',localStorage.getItem('color'));
                     cargaContenido(data,params);
 //console.log(data.content.texto_html);
                 },
@@ -47,26 +48,55 @@ define(['hbs!js/container/gallerylbm','hbs!js/container/containerlbm','hbs!js/co
                     stClass="photo_gallery_11";
                 }
                 if(data.img>=3){
-                    stClass="photo_gallery_13";
+                    stClass="photo_gallery_12";
                 }
                 var imagesIni='<ul id="photoslist" class="'+stClass+'">';
                 var imagesFin='<div class="clearleft"></div></ul>';
+                var numim=0;
+                    var numvid=0;
+                    console.log(data.content);
                 $.each(data.content,function(key,value){
                     
+                    
                     if(value.tipo_contenido==1){
-                        imagenes+='<li><a  href="http://meew.co/dashmeew'+value.file_name+'"  title="Photo title" class="swipebox"><img src="http://meew.co/dashmeew'+value.file_name+'" alt="image"/></a></li>'
+                        imagenes+='<li><a  href="http://meew.co/dashmeew'+value.file_name+'"  title="'+value.name+'" class="swipebox"><img src="http://meew.co/dashmeew'+value.file_name+'" alt="image"/></a>'+value.name+'</li>'
 //                        imagenes+='<div class="'+stClass+'"><a rel="gallery-1" href="http://meew.co/dashmeew'+value.file_name+'"  title="Photo title" class="swipebox"><img src="http://meew.co/dashmeew'+value.file_name+'" style="width: 100%"></a></div>';
+                        numim+=1;
                     }
                     else if(value.tipo_contenido==2){
                         videos+='<div class="row" style="text-align: left; ">'+
                                 value.description+
                                 '</div> <br>'+
                                 '<iframe style="width: 100%;height:250px" src="https://www.youtube.com/embed/'+value.url_video+'" frameborder="0" allowfullscreen></iframe>';
+                        numvid+=1
                     }
                 });
                 var imagesEnd=imagesIni+imagenes+imagesFin;
-                $('.imagesgallerylbm').html(imagesEnd);
-                $('.videosgallerylbm').html(videos); 
+                if(numim>0 && numvid==0){
+                    $('.planes-page'+params.id+' .page-content-views').html(imagesEnd);
+                }
+                else if(numim==0 && numvid>0){
+                    $('.planes-page'+params.id+' .page-content-views').html(videos);
+                }
+                else if(numim>0 && numvid>0){
+                    $('.imagesgallerylbm').html(imagesEnd);
+                    $('.videosgallerylbm').html(videos); 
+                }
+                
+                
+//                $(".content-block-tabs").css("background-color", localStorage.getItem('color'));
+//                $(".content-block-tabs").css("opacity","0.7");
+                $(".button").css("background-color",localStorage.getItem('color'));
+                $(".button").css("opacity","0.8");
+//                $(".button.active").css("background-color",localStorage.getItem('color'));
+//                $(".active").css("background",localStorage.getItem('color'));
+//                $("#gallerysection").on("click",function(){
+//                    $("#gallerysection").removeClass(".button.active");
+////                    $("#gallerysection")
+//                    $(this).addClass(".button.active");
+//                    console.log("pasa");
+//                });
+//                $(".button.active").css("opacity","1");
             break;
             case "2":
 //                $('.titlecont').html(params.nombremod);
@@ -78,14 +108,26 @@ define(['hbs!js/container/gallerylbm','hbs!js/container/containerlbm','hbs!js/co
                 var imagesIni='<ul id="photoslist" class="photo_gallery_13">';
                 var imagesFin='<div class="clearleft"></div></ul>';
                 $.each(data.content,function(key,value){
-//                    if(value.tipo_contenido==1){
-                        imagenes+='<div class="row" ><div class="col-10"></div><div class="col-80" style="color:#7C904A">Prducto: '+value.name+' <br> Precio: '+value.precio_txt+'</div><div class="col-10"></div></div></div>'+
-                            '<div class="row" ><div class="col-10"></div><div class="col-80"><img src="http://meew.co/dashmeew'+value.file_name+'" style="width: 100%"></div><div class="col-10"></div></div></div>'+
-                            '<div class="row" ><div class="col-10"></div><div class="col-80" style="color:#7C904A">'+value.description+'</div><div class="col-10"></div></div></div><div class="row"><div class="col-10"></div><div class="col-80"><hr></div><div class="col-10"></div></div>';
+//                    if(value.tipo_contenido==1){Prducto: '+value.name+' <br> Precio: '+value.precio_txt+
+                        imagenes+='<div style="padding-top:20px"><div class="row" style="margin:0px 10px" >'+
+                            '<div class="col-50"><img src="http://meew.co/dashmeew'+value.file_name+'" style="width: 100%"></div>'+
+                            '<div class="col-50">'+
+                                '<div class="row"><strong>Producto: </strong></div><div clas="row">'+value.name+'</div>'+
+                                '<div class="row"><strong>Precio: </strong></div><div clas="row">'+value.precio_txt+'</div>'+
+                                '<div class="row"><strong>Descripción: </strong></div><div class="row" style="text-align: justify">'+value.description+'</div>'+
+                                '<div class="row" style="text-align: center"><a href="#" class="swiper_read_more link-loginii btncompra">comprar</a></div>'+
+                                
+                                
+                            '</div></div><hr></div>';
                         
                     
                 });
+                
                 $('.planes-page'+params.id+' .page-content-views').html(imagenes);
+//                $('.planes-page'+params.id+' .page-content-views').append('<a href="#" class="share-link">compartir</a>');
+                $(".btncompra").css("color",localStorage.getItem('color'))
+                $(".btncompra").css("border","1px solid "+localStorage.getItem('color'));
+                $(".btncompra").css({"margin-left":"auto","margin-right":"auto"});
                 break;
             case "3":
 //                var textohtml='<div class="page-content">'+data.content+'</div>';

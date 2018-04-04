@@ -53,8 +53,9 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
         var mySwiper = new Swiper('.swiper-container', {
             autoplay:5000,
             speed: 400,
+            disableOnInteraction: false,
             spaceBetween: 30,
-            pagination:'.swiper-pagination',
+            pagination: '.swiper-pagination',
             loop:true
         });
     var contentM="";

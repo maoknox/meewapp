@@ -61,13 +61,42 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
     if(email==null || email.length==0){
         f7.popup('.popup-about',false);
     }
+    $$('.share-link').on('click',function(){
+        console.log("Entonces");
+        if (!FacebookInAppBrowser.exists(FacebookInAppBrowser.settings.appId) || !FacebookInAppBrowser.exists(window.localStorage.getItem('facebookAccessToken')) || window.localStorage.getItem('facebookAccessToken') === null) {
+                console.log('[FacebookInAppBrowser] You need to set your app id in FacebookInAppBrowser.settings.appId and have a facebookAccessToken (try login first)');
+                iniciaSesionFb();
+        }
+        else{
+            FacebookInAppBrowser.post({
+                name: 'Cortés del monte',
+                link: 'http://cortesdelmonte.com/',
+                message: 'Nuestro café excelso',
+                picture: 'http://cortesdelmonte.com/wp-content/uploads/2017/07/Presentacion-Excelso-Cundinamarca.jpg',
+                description: 'Nuestro café excelso'}, function(response) {
+                    if(response) {
+                        console.log('post successful');
+                    }
+            });
+        }
+    });
     $$('#cerrarSesion').on('click',function(){
-        FacebookInAppBrowser.logout(function() {
-            f7.popup('.popup-about',false);
-        });
+        if (!FacebookInAppBrowser.exists(FacebookInAppBrowser.settings.appId) || !FacebookInAppBrowser.exists(window.localStorage.getItem('facebookAccessToken')) || window.localStorage.getItem('facebookAccessToken') === null) {
+                FacebookInAppBrowser.logout(function() {
+                f7.popup('.popup-about',false);
+            });
+        }
+        else{
+            navigator.app.exitApp();
+        }
+        
     });
     $$('.loginfb').on('click',function(){
 //        console.log("entra a login facebook");
+        iniciaSesionFb();
+        
+    });
+    function iniciaSesionFb(){
         f7.showPreloader();
         FacebookInAppBrowser.login({
             send: function() {
@@ -105,15 +134,14 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
                     }
             }
         });
-    });
+    }
+    
     var mainView = f7.addView('.view-main', {
         dynamicNavbar: true
     });
     ret['mainView']=mainView;
     
-    $$('.salir').on('click',function(){
-        navigator.app.exitApp();
-    });
+    
     $$('.close-popupi').on('click', function () {
         $("#form-login").validate({
             rules: {
@@ -171,6 +199,7 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
                         cargaMenuBottom(JSON.stringify(data.contmb),data.color_icon,data.color);
 //                        console.log(localStorage.getItem("personanombre")+"---------------------");
                         Router.load("list");
+                        $("#nombre-usuario").text(localStorage.getItem('personanombre'));
 //                        Router.init();
                     }
                     else{
@@ -188,12 +217,12 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
         }
     }
     function cargaMenuBottom(contmb,colorIcon,color){
-        var number=3;
+        var number=2;
         var contmbAux=JSON.parse(contmb);
 //        console.log(contmbAux);
         
         $.each(contmbAux,function(key,v){
-//            number=number+1;
+            number=number+1;
             
             var contentmb='<div id="view-'+number+'" class="view tab">'+
           '<div class="navbar">'+
@@ -229,6 +258,9 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
 //                mainView.router.back();
 //            });
             $(".bars-pers").css("color",colorIcon);
+            $(".toolbar-inner").css("background-color",color);
+            $(".toolbar-inner").css("opacity","0.6");
+            
             creaEvento(number,v,colorIcon,color);
 //            $('.pages').css('background',color);
 //            $('.page').css('background',color);
@@ -263,6 +295,8 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
         $(".main-page").css("-moz-background-size",'cover');
         $(".main-page").css("-o-background-size",'cover');
         $(".main-page").css("background-size",'cover');
+        $('.view').css('background-color',color);
+                   $('.views').css('background-color',color);
 //        $(".bars-pers").css('color',colorIcon);
 //        $('.navbar .toolbar .subnavbar').css('background',color);
     }

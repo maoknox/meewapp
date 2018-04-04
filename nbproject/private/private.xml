@@ -5,13 +5,12 @@
         <group>
             <file>file:/var/projects/phoneGap/meewapp/www/js/loadbmenu/loadbmenuView.js</file>
             <file>file:/var/projects/phoneGap/meewapp/www/js/container/containerView.js</file>
+            <file>file:/var/projects/phoneGap/meewapp/www/js/phonegap.facebook.inappbrowser.js</file>
             <file>file:/var/projects/phoneGap/meewapp/www/index.html</file>
-            <file>file:/var/projects/phoneGap/meewapp/www/js/container/contacto.hbs</file>
             <file>file:/var/projects/phoneGap/meewapp/www/js/index.js</file>
             <file>file:/var/projects/phoneGap/meewapp/www/lib/css/framework7.css</file>
             <file>file:/var/projects/phoneGap/meewapp/www/app.js</file>
             <file>file:/var/projects/phoneGap/meewapp/www/js/container/containerController.js</file>
-            <file>file:/var/projects/phoneGap/meewapp/www/js/container/gallerylbm.hbs</file>
             <file>file:/var/projects/phoneGap/meewapp/www/js/container/contactolbm.hbs</file>
             <file>file:/var/projects/phoneGap/meewapp/www/js/loadbmenu/contacto.hbs</file>
         </group>

@@ -71,11 +71,12 @@ var app = {
                         $.each(loginRs,function(keyrs,valrs){
                             logo="";
                             if(valrs==1){
-                                $(".ingreso-rs").css("display","block");
+                                $("#ingreso-rs").css("display","block");
                                 switch(keyrs){
                                     case "login_facebook":
                                         logo="loginfacebook.png";
-                                        rsocial="loginfb";           
+                                        rsocial="loginfb"; 
+//                                        $("#lgfacebook").css("display","block");
                                         break;
                                     case "login_facebook":
                                         logo="logingoogle.png";
@@ -83,7 +84,7 @@ var app = {
                                         break;
 
                                 }
-                                $(".ingreso-rs-logos").append('<div class="col-25perc" ><img src="images/'+logo+'" alt="" style="width: 100%;cursor: pointer;" class="'+rsocial+'" /></div>');
+                                $("#icon-rs").append('<div class="col-45" ><img src="images/'+logo+'" alt="" style="width: 100%;cursor: pointer;" class="loginfb" /></div>');
                             }
                         });
                     }
@@ -99,7 +100,10 @@ var app = {
                     localStorage.setItem('color',data.color);
                     localStorage.setItem('color_icon',data.color_icon); 
         
-//                   $('.login-screen-content').css('background',data.color);
+                   $('.login-screen-content').css('background-color',data.color);
+                   $('.view').css('background-color',data.color);
+                   $('.views').css('background-color',data.color);
+                   $('.navbar-inner').css('background-color',data.color);
 //                   $('.login-screen').css('background',data.color);
 //                   $('.item-title').css('color',data.color_icon);
 //                   $('input').css('color',data.color_icon);

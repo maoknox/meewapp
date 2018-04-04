@@ -78,8 +78,8 @@
             request.open(type, url, true);
             if (data) {
                 request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                request.setRequestHeader("Content-length", data.length);
-                request.setRequestHeader("Connection", "close");
+//                request.setRequestHeader("Content-length", data.length);
+//                request.setRequestHeader("Connection", "close");
             }
             request.onreadystatechange = function() {
                 if (request.readyState == 4) {

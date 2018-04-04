@@ -15,6 +15,7 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
 //                    $('.container-page').html(data.content);
 
                     f7.hidePreloader();
+                    $('.navbar-inner').css('background-color',localStorage.getItem('color'));
                     cargaContenido(data,params);
 //console.log(data.content.texto_html);
                 },
@@ -66,6 +67,11 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
                 var imagesEnd=imagesIni+imagenes+imagesFin;
                 $('.imagesgallery').html(imagesEnd);
                 $('.videosgallery').html(videos); 
+                
+                
+                $(".content-block-tabs").css("background-color", localStorage.getItem('color'));
+                $(".button.active").css("background",localStorage.getItem('color'));
+                $(".button.active").css("opacity","0.6");
 //                f7.alert("asdf");
             break;
             case "2":
@@ -82,6 +88,8 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
                     
                 });
                 $('.container-page').html(imagenes);
+                $('.container-page').append('<a href="#" class="share-link">compartir</a>');
+                
                 break;
             case "3":
 //                var textohtml='<div class="page-content">'+data.content+'</div>';
@@ -96,6 +104,14 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
                 $("#address").text("  "+data.content.direccion);
                 console.log(data.content);
                 initializeMap(data.content);
+                $(".btncompra").css("color",localStorage.getItem('color'))
+                $(".btncompra").css("border","1px solid "+localStorage.getItem('color'));
+                $(".btncompra").css({"margin-left":"auto","margin-right":"auto"});
+                $(".line-bottom").css("border-bottom","2px solid "+localStorage.getItem('color'));
+                $(".item-cl-srv").css("border-bottom","2px solid "+localStorage.getItem('color'));
+                $(".bder-left").css("border-left","2px solid "+localStorage.getItem('color'));
+                $(".line-input").css("border","1px solid "+localStorage.getItem('color'));
+                
                 break;
             case "5":
 //                console.log(data.content);
