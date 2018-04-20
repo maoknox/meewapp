@@ -50,6 +50,65 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
 ////        view3:view3,
 //        router: Router
     };
+    $(".link-tycond").on("click",function(){
+        console.log("terminos");
+        $(".popup-tycond .list-block-contact").html(localStorage.getItem('tycond'));
+        f7.popup('.popup-tycond',false);
+    });
+    
+    $$('.popback-lintycond').on('click', function () {
+        f7.closeModal(".popup-tycond",false);
+    });
+    $(".link-perfil").on("click",function(){
+        console.log(localStorage.getItem('campos_form'));
+        var usuario=JSON.parse(localStorage.getItem('usuarioreg'));
+        $("#form-perf").validate();
+        $.each(JSON.parse(localStorage.getItem('campos_form')),function(key,value){
+            console.log(usuario[key]);
+            if(value.activo==1){
+                if(key!='rango_edad' && key!='genero' && key!='politicas_privacidad_activo'){
+                    var readOnly=""
+                    if(key=='nombre_usuario' || key=='persona_correo'){
+                        readOnly="readonly";
+                    }
+                    $('.popup-dataperfil #inputs-perfil').append('<div class="input-login " ><input name="'+key+'" id="'+key+'" placeholder="'+value.label+'" type="text" class="line-input" '+readOnly+' value="'+usuario[key]+'"></div><br>');
+                }
+                else{
+                    if(key!='politicas_privacidad_activo'){
+                        $('.popup-dataperfil #inputs-perfil').append('<div class="input-login" ><select name="'+key+'" id="'+key+'" class="line-input"><option value="">Seleccione '+value.label+'...</option></select></div><br>');                        
+                        $.each(JSON.parse(localStorage.getItem('parametros')),function(keypar,valuepar){
+                            var selected="";
+                                if(valuepar.idparametros==usuario[key]){
+                                    selected='selected="selected"';
+                                }
+                            if(key=="rango_edad" && valuepar.tipo=="rango_edad"){
+                                
+                                $("#"+key).append("<option value='"+valuepar.idparametros+"' "+selected+">"+valuepar.nombre+"</option>");
+                            }
+                            else if(key=="genero" && valuepar.tipo=="genero"){
+                                $("#"+key).append("<option value='"+valuepar.idparametros+"' "+selected+">"+valuepar.nombre+"</option>");
+                            }
+
+                        });
+                    }
+                }
+                if(key!='politicas_privacidad_activo'){
+                    $("[name="+key+"]").rules("add",{required: true,messages:{required:"Campo requerido"}});
+                }
+                $(".line-input").css("border","1px solid "+localStorage.getItem('color'));
+            }
+         });
+        $(".btnmodifdata").css("color",localStorage.getItem('color'))
+        $(".btnmodifdata").css("border","1px solid "+localStorage.getItem('color'));
+        $(".btnmodifdata").css({"margin-left":"auto","margin-right":"auto"});
+       f7.popup('.popup-dataperfil',false);
+    });
+    $(".btnmodifdata").on("click",function(){
+        modificaDatos();
+    });
+    $$('.popback-linkperfil').on('click', function () {
+        f7.closeModal(".popup-dataperfil",false);
+    });
     $(".loadcontent").on('click',function(){
 //        console.log("load");
     });
@@ -62,7 +121,6 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
         f7.popup('.popup-about',false);
     }
     $$('.share-link').on('click',function(){
-        console.log("Entonces");
         if (!FacebookInAppBrowser.exists(FacebookInAppBrowser.settings.appId) || !FacebookInAppBrowser.exists(window.localStorage.getItem('facebookAccessToken')) || window.localStorage.getItem('facebookAccessToken') === null) {
                 console.log('[FacebookInAppBrowser] You need to set your app id in FacebookInAppBrowser.settings.appId and have a facebookAccessToken (try login first)');
                 iniciaSesionFb();
@@ -160,7 +218,38 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
         f7.loginScreen(".popup-about",false);
         f7.closeModal(".popup-register",false);
     });
-     
+    function modificaDatos(){
+        if ($("#form-perf").valid()) {
+            var formModifData = f7.formToJSON('#form-perf');
+            
+            $.ajax({//http://meew.co/dashmeew/
+                url: 'http://meew.co/dashmeew/index.php/site/modificaDatosApp',
+//                url: 'http://localhost/meew/index.php/site/loginPlatformMovile',
+                dataType: 'json',
+                data:formModifData,
+                type: 'post',
+                async:true,
+                crossDomain : true,
+                before: f7.showPreloader(),
+                success: function(data) {
+                    
+                    f7.hidePreloader();
+                    if(data.status=='exito'){
+                      f7.alert("Datos modificados satisfactoriamente");
+                    }
+                    else{
+                        f7.alert(data.msg);
+                    }
+                },
+                error:function(error){
+                    f7.hidePreloader();
+                    f7.alert("Error en comunicación con el servidor, revise la conexión a internet o inténtelo más tarde.");
+//                    $('.list-block-label').html(JSON.stringify(error));
+                },
+                
+            });
+        }
+    }
     function loginMeew(){
         if ($("#form-login").valid()) {
             contact = new Contact();
@@ -178,16 +267,17 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
                 before: f7.showPreloader(),
                 success: function(data) {
 //                    Router.init();
-//                    console.log(JSON.stringify(data)+"------------|||||----------------");
+//                    console.log(JSON.stringify(data));
 //                    var retrivedContent=localStorage.getItem('content');
 //                    console.log(JSON.parse(retrivedContent));
                     
                     f7.hidePreloader();
                     if(data.status=='exito'){
-                        
 //                        $('.toolbar').css('background',data.color);
 //                        $('.navbar').css('background',data.color);
 //                        $('.subnavbar').css('background',data.color);
+                        localStorage.setItem('tycond', data.tycond);
+                        localStorage.setItem('usuarioreg', JSON.stringify(data.usuario));
                         localStorage.setItem('content', JSON.stringify(data.contplantilla));
                         localStorage.setItem('email', data.usuario.email);
                         localStorage.setItem('personid', data.usuario.personid);
@@ -213,15 +303,14 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
                 },
                 
             });
-            
         }
     }
     function cargaMenuBottom(contmb,colorIcon,color){
         var number=2;
         var contmbAux=JSON.parse(contmb);
-//        console.log(contmbAux);
         
         $.each(contmbAux,function(key,v){
+            console.log(v);
             number=number+1;
             
             var contentmb='<div id="view-'+number+'" class="view tab">'+
@@ -240,7 +329,7 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
          '</div>';
             $('.views').append(contentmb);
             var menBottom='<a href="#view-'+number+'" class="tab-link view-'+number+'">'+
-                    '<i class="f7-icons size-50" >'+v.icon+'</i><span class="tabbar-label" >'+v.nombre_modulo+'</span>'
+                    '<i class="f7-icons size-50 ">'+v.icon+'</i><span class="tabbar-label" >'+v.nombre_modulo+'</span>'
                 '</a>';
                 $('.toolbar-inner').append(menBottom);
                 
@@ -310,16 +399,21 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
         $.each(JSON.parse(localStorage.getItem('campos_form')),function(key,value){
             if(value.activo==1){
                 if(key!='rango_edad' && key!='genero' && key!='politicas_privacidad_activo'){
-                    $('.popup-register #inputs-reg').append('<div class="input-login" ><input name="'+key+'" id="'+key+'" placeholder="'+value.label+'" type="text"  ></div><br>');
+                    $('.popup-register #inputs-reg').append('<div class="input-login " ><input name="'+key+'" id="'+key+'" placeholder="'+value.label+'" type="text" class="line-input"  ></div><br>');
                 }
                 else{
                     if(key=='politicas_privacidad_activo'){
                         $('.popup-register #inputs-reg').append('<div class="input-login" ><label class="labelerr">Acepta términos y condiciones?</label></div><br>');                                                                        
-                        $('.popup-register #inputs-reg').append('<div class="input-login" ><label><input type="checkbox" name="'+key+'" id="'+key+'_si" value="1">Si</label></div><br>');                                                
-                        $('.popup-register #inputs-reg').append('<div class="input-login" ><label><input type="checkbox" name="'+key+'" id="'+key+'_no" value="0">No</label></div><br>'); 
-                    
+                        $('.popup-register #inputs-reg').append('<div class="input-login" ><label><input  type="radio" name="'+key+'" id="'+key+'_si" value="1" class="line-input">Si</label></div><br>');                                                
+                        $('.popup-register #inputs-reg').append('<div class="input-login" ><label><input type="radio" name="'+key+'" id="'+key+'_no" value="0" class="line-input">No</label></div><br>');
+                        $('.popup-register #inputs-reg').append('<div class="input-login link-tycondreg" ><a href="#" style="color:#999"><u>Térmions y condiciones</u></a></div><br>');
+                        $('.link-tycondreg').on("click",function(){
+                            console.log("terminos");
+                            $(".popup-tycond .list-block-contact").html(localStorage.getItem('tycond'));
+                            f7.popup('.popup-tycond',false);
+                        });
                     }else {
-                        $('.popup-register #inputs-reg').append('<div class="input-login" ><select name="'+key+'" id="'+key+'" ><option value="">Seleccione '+value.label+'...</option></select></div><br>');                        
+                        $('.popup-register #inputs-reg').append('<div class="input-login" ><select name="'+key+'" id="'+key+'" class="line-input"><option value="">Seleccione '+value.label+'...</option></select></div><br>');                        
                         $.each(JSON.parse(localStorage.getItem('parametros')),function(keypar,valuepar){
                             if(key=="rango_edad" && valuepar.tipo=="rango_edad"){
                                 $("#"+key).append("<option value='"+valuepar.idparametros+"'>"+valuepar.nombre+"</option>");
@@ -334,6 +428,7 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
                 }
                 
                 $("[name="+key+"]").rules("add",{required: true,messages:{required:"Campo requerido"}});
+                $(".line-input").css("border","1px solid "+localStorage.getItem('color'));
             }
          });
         

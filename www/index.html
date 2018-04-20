@@ -48,13 +48,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.0/css/swiper.css">
     <link href="css/swipebox.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!--    <link href="css/icons.css" rel="stylesheet" type="text/css"/>
+    <link href="css/styleicons.css" rel="stylesheet" type="text/css"/>-->
     <!--<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/css/swiper.min.css">-->
-    <title>Meew</title>
+    <title>Cortes del monte</title>
 </head>
 
 <body >
     <div class="login-screen">
         <div class="view"> 
+            <div class="navbar">
+                <div class="navbar-inner">
+                  <div class="left"><a href="#" class="back link link-volver"> <i class="icon icon-back"></i><span>Volver</span></a></div>
+                </div>
+            </div>
             <div class="page-login">
                 <div class="page-content login-screen-content">
                     <form id="form-login">
@@ -72,8 +80,13 @@
                         </div>
                         <div class="list-block">
                             <div class="div-login">                             
-                                <div class="row align-items-meew"  ><div class=" ini-text"><a href="#" class="swiper_read_more link-loginii">INGRESAR</a><a href="#" class="swiper_read_more  link-volver">VOLVER</a></div></div>
-                                <div class="list-block-label" id="ingreso-rs" style="display:none" >
+                                <div class="row align-items-meew"  >
+                                    <div class=" ini-text">
+                                        <div class="row buttons-l"><a href="#" class="swiper_read_more link-loginii" style="margin:0px auto">INGRESAR</a></div>
+                                        <!--<div class="row buttons-l"><a href="#" class="swiper_read_more  link-volver" style="margin:0px auto">VOLVER</a></div>-->
+                                    </div>
+                                </div>
+                                <div class="list-block-label" id="ingreso-rs" style="display:none;pading" >
                                     <div class="row align-items-meew"  >
                                         <div class="col-50 label-secondary" >ó ingresa con:</div>
                                         <div class="col-50 " id="icon-rs" ></div>
@@ -107,17 +120,17 @@
         <br>
         <div class="row">
             <div class="col-20 " ><img src="images/menu/persona.fw.png"    alt="" title="" /></div>
-            <div class="col-80 " style="padding-top:10px; color: #155067">Perfil</div>
+            <div class="col-80 link-perfil" style="padding-top:10px; color: #155067"><a href="#" style="color: #155067" >Perfil</a></div>
         </div>
         <div class="row" style="padding-top:5px;padding-bottom:10px;"><div class="col-100" style="border-top: 2px solid #C7CD4D"></div></div>
         <div class="row">
             <div class="col-20 " ><img src="images/menu/tyc.fw.png"    alt="" title="" /></div>
-            <div class="col-80 " style="padding-top:10px; color: #155067">Términos y condiciones</div>
+            <div class="col-80 link-tycond" style="padding-top:10px; color: #155067"><a href="#" style="color: #155067" >Términos y condiciones</a></div>
         </div>
         <div class="row" style="padding-top:5px;padding-bottom:10px;"><div class="col-100" style="border-top:2px solid #C7CD4D"></div></div>
         <div class="row">
             <div class="col-20 " ><img src="images/menu/sesion.fw.png"    alt="" title="" /></div>
-            <div class="col-80 " style="padding-top:10px; color: #155067" id="cerrarSesion"><a href="#" >Cerra sesión</a></div>
+            <div class="col-80 " style="padding-top:10px; color: #155067" id="cerrarSesion"><a href="#" style="color: #155067" >Cerra sesión</a></div>
         </div>
         
         <div class="row" style="padding-top:5px;padding-bottom:10px;"><div class="col-100" style="border-top:2px solid #C7CD4D"></div></div>
@@ -196,7 +209,7 @@
 <div class="popup popup-about">
     <div class="page-content login-screen-content">
         <div class="list-block">
-            <div class="list-block-label" style="margin: 25% 0px 0px 0px">
+            <div class="list-block-label" style="text-align:center">
                 <img src="img/login.png" style="width: 80%">
             </div>
         </div>
@@ -256,14 +269,73 @@
                                 <div id="inputs-reg">
                                     
                                 </div>
-                                <div class="row box-wrapper-iiid" style="padding-bottom: 0px; margin-bottom: 0px; align-items: baseline"> 
+                                <div class="row " style="padding-bottom: 0px; margin-bottom: 0px; align-items: baseline"> 
+                                    <a href="#" class="swiper_read_more link-loginii btncompra" style="color: rgb(40, 20, 11); border: 1px solid rgb(40, 20, 11); margin-left: auto; margin-right: auto;">comprar</a>
+                                </div>
+
+                                    <!--                                <div class="row box-wrapper-iiid" style="padding-bottom: 0px; margin-bottom: 0px; align-items: baseline"> 
                                     <div class="link-prodsii">   
                                         <ul style="margin:0px 60px;">
-                                            <li><a href="#" id="creaCuenta" class="creaCuenta">Crear Cuenta</a></li>
+                                            <li><a href="#">ENVIAR</a></li>
                                         </ul>
                                     </div>
+                                </div>-->
+                            </form>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--Modifica datos de perfil-->
+    <div class="popup popup-dataperfil" style="padding-bottom:50px ">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="left"><a href="#" class="link popback-linkperfil"> <i class="icon icon-back"></i><span>Back</span></a></div>
+                <div class="center sliding">Datos de pefil</div>
+                <div class="right">
+                  <a href="#" class="link icon-only"></a>
+                </div>
+            </div>
+        </div>
+        <div class="pages" id="contact">
+            <div data-page="contacto" style="height: 100%" >
+                <div class="page-content-serv">
+                    <div class="content-block-clserv">
+                        <div class="list-block-contact">
+                            <form id="form-perf">
+                                <div id="inputs-perfil">
+                                    
+                                </div>
+                                <div class="row">
+                                    <a href="#" class="swiper_read_more link-loginii btnmodifdata">actualizar</a>
                                 </div>
                             </form>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Términos y condiciones-->
+    <div class="popup popup-tycond" style="padding-bottom:50px ">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="left"><a href="#" class="link popback-lintycond"> <i class="icon icon-back"></i><span>Back</span></a></div>
+                <div class="center sliding">Términos y condiciones</div>
+                <div class="right">
+                  <a href="#" class="link icon-only"></a>
+                </div>
+            </div>
+        </div>
+        <div class="pages" id="contact">
+            <div data-page="contacto" style="height: 100%" >
+                <div class="page-content-serv">
+                    <div class="content-block-clserv">
+                        <div class="list-block-contact">
                         </div>
                     </div>  
                 </div>
@@ -277,7 +349,8 @@
          app.initialize(); 
      </script>
      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDT9BgFSTCCAxMtteEZAavsw3NPfgxdjRc" type="text/javascript"></script>  
-     <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
      <script src="js/jquery.validate.min.js"  type="text/javascript"></script>
      <script src="js/phonegap.facebook.inappbrowser.js"></script>
      <script type="text/javascript" src="js/jquery.swipebox.js" ></script>
@@ -286,7 +359,8 @@
      <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.0/js/swiper.js"></script>
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.0/js/swiper.min.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.0/js/swiper.esm.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.0/js/swiper.esm.bundle.js"></script>
+    <!--<script src="js/icons.js" type="text/javascript"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.0/js/swiper.esm.bundle.js"></script>-->
      
     </body>
 </html>

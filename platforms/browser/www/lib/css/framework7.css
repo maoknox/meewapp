@@ -1722,9 +1722,10 @@ html.pixel-ratio-3 .toolbar:before {
   position: relative;
   text-overflow: ellipsis;
   white-space: nowrap;
-}input[placeholder], [placeholder], *[placeholder] {
-    color: #C6CC49 ;
 }
+/*input[placeholder], [placeholder], *[placeholder] {
+    color: #C6CC49 ;
+}*/
 .subnavbar input[type="text"],
 .navbar input[type="text"],
 .subnavbar input[type="password"],
@@ -2717,7 +2718,7 @@ html.pixel-ratio-3 .content-block-inner:after {
 }
 .list-block-contact {
   font-size: 17px;
-  margin:10px 35px 0px 10px;
+  margin:10px 10px 0px 10px;
 }
 .list-block {
   margin: 35px 0;
@@ -3131,7 +3132,7 @@ html.pixel-ratio-3 .list-block .list-button:after {
 }
 .list-block .list-block-label {
   margin: 10px 0 35px;
-  padding: 0px  15px 0px 15px;
+  /*padding: 0px  15px 0px 15px;*/
   font-size: 14px;
   color: #8f8f94;
 }
@@ -3489,8 +3490,9 @@ html.ios-gt-8 .contacts-block .list-group-title {
 {
     color: #999;
     border-radius: 6px;
-    padding: 10px;
+    padding: 10px 0px 10px 0px;
     width: 100%;
+    text-indent: 10px;
 }
 
 .list-block-contact labelerr{
@@ -8293,7 +8295,7 @@ html.ios-gt-8 .notifications .item-subtitle {
   display: none;
 }
 .login-screen-content .list-block-label {
-  text-align: center;
+  /*text-align: center;*/
 }
 .login-screen-title {
   text-align: center;

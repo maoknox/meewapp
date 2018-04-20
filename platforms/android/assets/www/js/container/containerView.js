@@ -98,7 +98,7 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
                 break;
             case "4":
                 $('.container-page').html(viewContacto);
-                $('.nombre').text(localStorage.getItem('personanombre'));
+                $('.nombre').text("Mi nombre es: "+localStorage.getItem('personanombre'));
                 $("#emailpersona").text(data.content.correo_contacto);
                 $("#celularpersona").text(data.content.telefono);
                 $("#address").text("  "+data.content.direccion);
@@ -114,13 +114,51 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
                 
                 break;
             case "5":
-//                console.log(data.content);
-                var opciones='<option value="">Seleccione...</option>';
-                 $.each(data.content,function(key,value){
-                        opciones+='<option value="'+value.idtema_soporte+'">'+value.titulo+'</option>';
-                });
+                console.log(data.content);
+//                var opciones='<option value="">Seleccione...</option>';
+//                 $.each(data.content,function(key,value){
+//                        opciones+='<option value="'+value.idtema_soporte+'">'+value.titulo+'</option>';
+//                });
+                
                 $('.container-page').html(viewSoporte);
-                $('.temasoporte').html(opciones);
+                var soporteDiv="";
+                $.each(data.content,function(key,value){
+                    soporteDiv+="<h3 '>"+value.titulo+"</h3><div>";
+                    $.each(value.subtema,function(keys,values){
+                        soporteDiv+='<div class="tema-sub" ><div class="subtema-sub">'+value.titulo+'</div><div><textarea class="tema-inqu" name="'+values.idtema_soporte+'" placeholder="Escriba aquí si desea agregar un detalle adicional a su inquietud"></textarea></div></div>';
+                    });
+                    soporteDiv+="</div>";
+                });
+                $("#menu-sl").html('<a href="#" class="envia-form-sop">enviar</a>');
+                $(".envia-form-sop").on('click',function(){
+                    var datosSop=$("#form_temasop").serialize();
+                    enviaComentario(datosSop);
+                });
+                $( "#accordion" ).html(soporteDiv);
+                $(".line-bottom").css("border-bottom","2px solid "+localStorage.getItem('color'));
+//                $(".tema-sub").css("opacity",'0.8');
+                
+                $( "#accordion" ).accordion({
+                    collapsible: true,
+                     active: false
+                });
+                $("#accordion h3 ").css("background-color",localStorage.getItem('color'));
+                $("#accordion h3").css("color",localStorage.getItem('color_icon'));
+//                $("#accordion h3").css("margin","0.2em 0.2em");
+//                $("#accordion h3").css("padding","0.2em 0.2em");
+                
+                $(".tema-sub").css("color",localStorage.getItem('color_icon'));
+                $(".tema-sub").css("background-color",localStorage.getItem('color'));
+                $(".tema-sub").css("opacity","0.5");
+                $(".tema-inqu").css("width","100%");
+                $(".tema-inqu").css("height","50px");
+                $(".subtema-sub").css("padding","5px 5px");
+//                $(".ui-accordion .ui-accordion-content").css("margin",".2em .2em");
+                $(".ui-accordion .ui-accordion-content").css("margin-bottom","5px");
+                $(".ui-accordion .ui-accordion-content").css("padding","0.2em 0.1em");
+                $(".ui-accordion .ui-accordion-content").css("height","auto");
+                $(".ui-accordion .ui-accordion-content").css("overflow","hidden");
+//                $('.temasoporte').html(opciones);
                 
                 break;
                 
@@ -133,6 +171,35 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
 //            console.log("sadsf");
 //        });
         
+    }
+    function enviaComentario(datosSop){
+        console.log(datosSop);
+        $.ajax({//http://meew.co/dashmeew/
+            url: 'http://meew.co/dashmeew/index.php/site/guradaDatosSoporte',
+//                url: 'http://localhost/meew/index.php/site/loginPlatformMovile',
+            dataType: 'json',
+            data:datosSop,
+            type: 'post',
+            async:true,
+            crossDomain : true,
+            before: f7.showPreloader(),
+            success: function(data) {
+
+                f7.hidePreloader();
+                if(data.status=='exito'){
+                  f7.alert("Datos modificados satisfactoriamente");
+                }
+                else{
+                    f7.alert(data.msg);
+                }
+            },
+            error:function(error){
+                f7.hidePreloader();
+                f7.alert("Error en comunicación con el servidor, revise la conexión a internet o inténtelo más tarde.");
+//                    $('.list-block-label').html(JSON.stringify(error));
+            },
+
+        });
     }
     function initializeMap(dataM) { // define function
         var latitud=dataM.latitud;

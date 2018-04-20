@@ -110,14 +110,13 @@ define(['hbs!js/container/gallerylbm','hbs!js/container/containerlbm','hbs!js/co
                 $.each(data.content,function(key,value){
 //                    if(value.tipo_contenido==1){Prducto: '+value.name+' <br> Precio: '+value.precio_txt+
                         imagenes+='<div style="padding-top:20px"><div class="row" style="margin:0px 10px" >'+
-                            '<div class="col-50"><img src="http://meew.co/dashmeew'+value.file_name+'" style="width: 100%"></div>'+
-                            '<div class="col-50">'+
+                            '<div class="col-30"><img src="http://meew.co/dashmeew'+value.file_name+'" style="width: 100%">'+
+                            '<div class="row" style="text-align: center"><a href="#" class="btn_tienda link-loginii btncompra">comprar</a></div>'+
+                            '</div>'+
+                            '<div class="col-70 texto-comercio">'+
                                 '<div class="row"><strong>Producto: </strong></div><div clas="row">'+value.name+'</div>'+
                                 '<div class="row"><strong>Precio: </strong></div><div clas="row">'+value.precio_txt+'</div>'+
                                 '<div class="row"><strong>Descripción: </strong></div><div class="row" style="text-align: justify">'+value.description+'</div>'+
-                                '<div class="row" style="text-align: center"><a href="#" class="swiper_read_more link-loginii btncompra">comprar</a></div>'+
-                                
-                                
                             '</div></div><hr></div>';
                         
                     

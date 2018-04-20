@@ -58,7 +58,7 @@ var app = {
                 crossDomain : true,
 //                before: progress.show(),
                 success: function(data) {
-                    console.log(data);
+//                    console.log(data);
                     
                     var parametros=data.parametros;
                     var camposForm=data.campo_registro;
@@ -74,7 +74,7 @@ var app = {
                                 $("#ingreso-rs").css("display","block");
                                 switch(keyrs){
                                     case "login_facebook":
-                                        logo="loginfacebook.png";
+                                        logo="botonFB.png";
                                         rsocial="loginfb"; 
 //                                        $("#lgfacebook").css("display","block");
                                         break;
@@ -84,7 +84,7 @@ var app = {
                                         break;
 
                                 }
-                                $("#icon-rs").append('<div class="col-45" ><img src="images/'+logo+'" alt="" style="width: 100%;cursor: pointer;" class="loginfb" /></div>');
+                                $("#icon-rs").append('<img src="images/'+logo+'" alt="" style="width: 100%;cursor: pointer;" class="loginfb" />');
                             }
                         });
                     }
