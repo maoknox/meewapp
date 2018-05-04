@@ -19,9 +19,6 @@
     "cordova-plugin-dialogs": {
       "PACKAGE_NAME": "org.com.meewapp"
     },
-    "cordova-plugin-fcm": {
-      "PACKAGE_NAME": "org.com.meewapp"
-    },
     "cordova-plugin-geolocation": {
       "PACKAGE_NAME": "org.com.meewapp"
     },
@@ -45,10 +42,19 @@
     },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "org.com.meewapp"
+    },
+    "cordova-plugin-x-socialsharing": {
+      "PACKAGE_NAME": "org.com.meewapp"
+    },
+    "cordova-plugin-fcm": {
+      "PACKAGE_NAME": "org.com.meewapp"
     }
   },
   "dependent_plugins": {
     "cordova-plugin-file": {
+      "PACKAGE_NAME": "org.com.meewapp"
+    },
+    "es6-promise-plugin": {
       "PACKAGE_NAME": "org.com.meewapp"
     }
   }

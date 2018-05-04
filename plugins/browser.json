@@ -43,6 +43,9 @@
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "org.com.meewapp"
     },
+    "cordova-plugin-x-socialsharing": {
+      "PACKAGE_NAME": "org.com.meewapp"
+    },
     "cordova-plugin-fcm": {
       "PACKAGE_NAME": "org.com.meewapp"
     }
@@ -52,6 +55,9 @@
       "PACKAGE_NAME": "org.com.meewapp"
     },
     "cordova-plugin-file": {
+      "PACKAGE_NAME": "org.com.meewapp"
+    },
+    "es6-promise-plugin": {
       "PACKAGE_NAME": "org.com.meewapp"
     }
   }

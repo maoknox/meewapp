@@ -5,6 +5,9 @@ body {
     color:#999
 }
 
+.list-block-contact .input-login select{
+    background-color: #fff;
+}
 .titulo-contato{
   text-align: left;
   margin: 0px 10px; 
@@ -192,6 +195,19 @@ background-size: cover;
     padding-bottom: 100px;
     overflow-y: auto;
 }
+.page-mltmedia {
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    /*bottom: 57px;*/
+    width: 100%;
+    height: 80%;
+    background: #fff;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    
+    overflow-y: auto;
+}
 .page-content-views {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
@@ -274,8 +290,8 @@ background-size: cover;
 }
 @media (orientation: landscape) and (max-height: 415px) {
     body {
-    height: 100%;
-}
+        height: 100%;
+    }
     .swiper-container {
     height: 100%;
     }
@@ -299,14 +315,14 @@ background-size: cover;
         bottom: 0px;
     }
     .page-content-views {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    box-sizing: border-box;
-    height: 85%;
-    position: relative;
-    z-index: 1;
-    top: 0px;
-}
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        box-sizing: border-box;
+        height: 85%;
+        position: relative;
+        z-index: 1;
+        top: 0px;
+    }
 }
 @media (orientation: landscape) and (max-height: 320px) {
     body {

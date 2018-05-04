@@ -34,14 +34,18 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
 //    f7.alert('Body','Título',function(){
 //        f7.alert('You have clicked the button!!!')
 //    });
-    FCMPlugin.onNotification(function(data){
-//            navigator.vibrate([1000]);
+if (typeof FCMPlugin != 'undefined') {
+   FCMPlugin.onNotification(function(data){
+//            navigator.vibrate([1000]); 
         if(data.wasTapped){
             f7.alert(data.body,data.title);
-        }else{
+        }else{ 
             f7.alert(data.body,data.title);
         }
     });
+}
+
+//    
     var ret={
         f7: f7
 //        mainView: mainView,
@@ -50,6 +54,7 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
 ////        view3:view3,
 //        router: Router
     };
+    //Abre link de términos y condiciones
     $(".link-tycond").on("click",function(){
         console.log("terminos");
         $(".popup-tycond .list-block-contact").html(localStorage.getItem('tycond'));
@@ -60,7 +65,6 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
         f7.closeModal(".popup-tycond",false);
     });
     $(".link-perfil").on("click",function(){
-        console.log(localStorage.getItem('campos_form'));
         var usuario=JSON.parse(localStorage.getItem('usuarioreg'));
         $("#form-perf").validate();
         $.each(JSON.parse(localStorage.getItem('campos_form')),function(key,value){
@@ -120,39 +124,43 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
     if(email==null || email.length==0){
         f7.popup('.popup-about',false);
     }
-    $$('.share-link').on('click',function(){
-        if (!FacebookInAppBrowser.exists(FacebookInAppBrowser.settings.appId) || !FacebookInAppBrowser.exists(window.localStorage.getItem('facebookAccessToken')) || window.localStorage.getItem('facebookAccessToken') === null) {
-                console.log('[FacebookInAppBrowser] You need to set your app id in FacebookInAppBrowser.settings.appId and have a facebookAccessToken (try login first)');
-                iniciaSesionFb();
-        }
-        else{
-            FacebookInAppBrowser.post({
-                name: 'Cortés del monte',
-                link: 'http://cortesdelmonte.com/',
-                message: 'Nuestro café excelso',
-                picture: 'http://cortesdelmonte.com/wp-content/uploads/2017/07/Presentacion-Excelso-Cundinamarca.jpg',
-                description: 'Nuestro café excelso'}, function(response) {
-                    if(response) {
-                        console.log('post successful');
-                    }
-            });
-        }
+    $$(".btnsharefb").on("click",function(){
+        console.log("share");
+        window.plugins.socialsharing.share('Message, subject, image and link', 'The subject', 'http://meew.co/dashmeew/uploads/5241PresentacionExcelsoSantander2.jpg', 'http://www.x-services.nl');
+//        window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+//        window.plugins.socialsharing.shareViaFacebook('Message via Facebook', "https://i.ytimg.com/vi/URRYB6XNt-w/maxresdefault.jpg", "http://meew.co/dashmeew/uploads/1251-Presentacion%20Excelso%20Cundinamarca.jpg", function() {console.log('share ok')}, function(errormsg){alert(errormsg)});
+//        window.plugins.socialsharing.shareViaTwitter('Message and link via Twitter', null, 'http://meew.co/dashmeew/uploads/1251-Presentacion%20Excelso%20Cundinamarca.jpg')
     });
+//    var options = {
+//      message: 'share this', // not supported on some apps (Facebook, Instagram)
+//      subject: 'the subject', // fi. for email
+//      files: ['', ''], // an array of filenames either locally or remotely
+//      url: 'http://meew.co/dashmeew/uploads/1251-Presentacion%20Excelso%20Cundinamarca.jpg',
+//      chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title
+//    }
+
+//    var onSuccess = function(result) {
+//      console.log("Share completed? " + result.completed); // On Android apps mostly return false even while it's true
+//      console.log("Shared to app: " + result.app); // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
+//    }
+
+//    var onError = function(msg) {
+//      console.log("Sharing failed with message: " + msg);
+//    }
     $$('#cerrarSesion').on('click',function(){
-        if (!FacebookInAppBrowser.exists(FacebookInAppBrowser.settings.appId) || !FacebookInAppBrowser.exists(window.localStorage.getItem('facebookAccessToken')) || window.localStorage.getItem('facebookAccessToken') === null) {
+//        if (!FacebookInAppBrowser.exists(FacebookInAppBrowser.settings.appId) || !FacebookInAppBrowser.exists(window.localStorage.getItem('facebookAccessToken')) || window.localStorage.getItem('facebookAccessToken') === null) {
                 FacebookInAppBrowser.logout(function() {
-                f7.popup('.popup-about',false);
-            });
-        }
-        else{
+                    f7.popup('.popup-about',false);
+                });
+//        }
+//        else{
+            localStorage.removeItem("email");
             navigator.app.exitApp();
-        }
-        
+//        }
     });
-    $$('.loginfb').on('click',function(){
-//        console.log("entra a login facebook");
+    $('.loginfb').on('click',function(){
+        console.log("entra a login facebook");
         iniciaSesionFb();
-        
     });
     function iniciaSesionFb(){
         f7.showPreloader();
@@ -185,11 +193,15 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
                     }
             },
             userInfo: function(userInfo) {
+                f7.hidePreloader();
                     if(userInfo) {
                             console.log(JSON.stringify(userInfo));
                     } else {
                             console.log('no user info');
                     }
+            },
+            error:function(){
+                f7.hidePreloader();
             }
         });
     }
@@ -214,6 +226,59 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
         f7.loginScreen(".login-screen",false);
         f7.closeModal(".popup-about",false);
     });
+    $$(".cambia-clave").on('click',function(){     
+        
+        f7.popup('.popup-cl',false);
+        $('.popup-cl #inputs-cl').html("");
+        $("#form-camclave").validate();
+        $('.popup-cl #inputs-cl').append('<div class="input-login " ><input name="passwdregc" id="passwdregc" placeholder="Password" type="password" class="line-input"  ></div><br>');
+        $('.popup-cl #inputs-cl').append('<div class="input-login " ><input name="passwordiic" id="passwordiic" placeholder="Confirmar password" type="password" class="line-input"  ></div><br>');                        
+        $(".btncl").css("color",localStorage.getItem('color'))
+        $(".btncl").css("border","1px solid "+localStorage.getItem('color'));
+        $(".btncl").css({"margin-left":"auto","margin-right":"auto"});
+        $(".line-input").css("border","1px solid "+localStorage.getItem('color'));
+//        console.log($("#passwdregc").val()+"-------------");
+//        $("#passwdregc").rules("add",{
+//            required:true,
+//            messages:{
+//                required:"Campo requerido"
+//            }
+//        });
+        $("#passwdregc").rules("add",{
+            required: true,
+            pwcheck: true,
+            minlength:8 
+            ,messages:{
+                required:"Campo requerido",
+                pwcheck: "El password debe tener al menos una letra en minúscula y al menos un dígito",
+                minlength: "El password debe tener mínimo 8 carácteres"
+            }
+        });
+        $("#passwordiic").rules("add",{
+                required: true,
+                equalTo: '#passwdregc'
+            ,messages:{
+                required:"Campo requerido",
+                equalTo: "La confirmación de password no coincide",
+            }
+        });
+        $.validator.addMethod("pwcheck", function(value) {
+            return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
+                && /[a-z]/.test(value) // has a lowercase letter
+                && /\d/.test(value) // has a digit
+         });
+    });
+    
+    $$(".envia_clave").on("click",function(){
+        if ($("#form-camclave").valid()) {
+            
+        }
+    });
+    $$(".popback-cl").on('click',function(){      
+        f7.closeModal('.popup-cl',false);
+    });
+    
+//    popback-register
     $$('.popback-register').on('click', function () {
         f7.loginScreen(".popup-about",false);
         f7.closeModal(".popup-register",false);
@@ -288,6 +353,8 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
                         cargaEstilos(data.image,data.color_icon,data.color);
                         cargaMenuBottom(JSON.stringify(data.contmb),data.color_icon,data.color);
 //                        console.log(localStorage.getItem("personanombre")+"---------------------");
+                        $(".men-lat").css("color",data.color);
+                        $(".border_lat").css("border-top","2px solid "+data.color);
                         Router.load("list");
                         $("#nombre-usuario").text(localStorage.getItem('personanombre'));
 //                        Router.init();
@@ -306,7 +373,7 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
         }
     }
     function cargaMenuBottom(contmb,colorIcon,color){
-        var number=2;
+        var number=1;
         var contmbAux=JSON.parse(contmb);
         
         $.each(contmbAux,function(key,v){
@@ -329,7 +396,7 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
          '</div>';
             $('.views').append(contentmb);
             var menBottom='<a href="#view-'+number+'" class="tab-link view-'+number+'">'+
-                    '<i class="f7-icons size-50 ">'+v.icon+'</i><span class="tabbar-label" >'+v.nombre_modulo+'</span>'
+                    '<span class="'+v.icon+' size-29"></span><span class="tabbar-label" >'+v.nombre_modulo+'</span>'
                 '</a>';
                 $('.toolbar-inner').append(menBottom);
                 
@@ -358,7 +425,6 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
         
     }
     function creaEvento(n,v,colorIcon,color){
-        
         $(".view-"+n).on('click',function(){
             $('.tab-link').css('color',colorIcon);
 //                console.log("pasa a vista "+n);
@@ -385,7 +451,7 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
         $(".main-page").css("-o-background-size",'cover');
         $(".main-page").css("background-size",'cover');
         $('.view').css('background-color',color);
-                   $('.views').css('background-color',color);
+        $('.views').css('background-color',color);
 //        $(".bars-pers").css('color',colorIcon);
 //        $('.navbar .toolbar .subnavbar').css('background',color);
     }
@@ -395,18 +461,24 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
     });
     $$('.link-register').on('click', function () {       
         f7.popup('.popup-register',false); 
+        $('.popup-register #inputs-reg').html("");
         $("#fomr-serv").validate();
+        console.log(localStorage.getItem('campos_form'));
         $.each(JSON.parse(localStorage.getItem('campos_form')),function(key,value){
             if(value.activo==1){
                 if(key!='rango_edad' && key!='genero' && key!='politicas_privacidad_activo'){
                     $('.popup-register #inputs-reg').append('<div class="input-login " ><input name="'+key+'" id="'+key+'" placeholder="'+value.label+'" type="text" class="line-input"  ></div><br>');
+                    if(key=='nombre_usuario'){
+                        $('.popup-register #inputs-reg').append('<div class="input-login " ><input name="passwdreg" id="passwdreg" placeholder="Password" type="password" class="line-input"  ></div><br>');
+                        $('.popup-register #inputs-reg').append('<div class="input-login " ><input name="passwordii" id="passwordii" placeholder="Confirmar password" type="password" class="line-input"  ></div><br>');                        
+                    }
                 }
                 else{
                     if(key=='politicas_privacidad_activo'){
                         $('.popup-register #inputs-reg').append('<div class="input-login" ><label class="labelerr">Acepta términos y condiciones?</label></div><br>');                                                                        
-                        $('.popup-register #inputs-reg').append('<div class="input-login" ><label><input  type="radio" name="'+key+'" id="'+key+'_si" value="1" class="line-input">Si</label></div><br>');                                                
+                        $('.popup-register #inputs-reg').append('<div class="input-login" style="float:left;display:inline"><label><input  type="radio" name="'+key+'" id="'+key+'_si" value="1" class="line-input">Si</label></div>');                                                
                         $('.popup-register #inputs-reg').append('<div class="input-login" ><label><input type="radio" name="'+key+'" id="'+key+'_no" value="0" class="line-input">No</label></div><br>');
-                        $('.popup-register #inputs-reg').append('<div class="input-login link-tycondreg" ><a href="#" style="color:#999"><u>Térmions y condiciones</u></a></div><br>');
+                        $('.popup-register #inputs-reg').append('<div class="input-login link-tycondreg" ><a href="#" style="color:#999"><u>Términos y condiciones</u></a></div><br>');
                         $('.link-tycondreg').on("click",function(){
                             console.log("terminos");
                             $(".popup-tycond .list-block-contact").html(localStorage.getItem('tycond'));
@@ -427,6 +499,32 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
 
                 }
                 
+                
+                if(key=='nombre_usuario'){
+                    $("#passwdreg").rules("add",{
+                        required: true,
+                        pwcheck: true,
+                        minlength:8 
+                        ,messages:{
+                            required:"Campo requerido",
+                            pwcheck: "El password debe tener al menos una letra en minúscula y al menos un dígito",
+                            minlength: "El password debe tener mínimo 8 carácteres"
+                        }
+                    });
+                    $("#passwordii").rules("add",{
+                            required: true,
+                            equalTo: '#passwdreg'
+                        ,messages:{
+                            required:"Campo requerido",
+                            equalTo: "La confirmación de password no coincide",
+                        }
+                    });
+                    $.validator.addMethod("pwcheck", function(value) {
+                        return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
+                            && /[a-z]/.test(value) // has a lowercase letter
+                            && /\d/.test(value) // has a digit
+                     });
+                }
                 $("[name="+key+"]").rules("add",{required: true,messages:{required:"Campo requerido"}});
                 $(".line-input").css("border","1px solid "+localStorage.getItem('color'));
             }
@@ -488,10 +586,8 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
                 error:function(error){
                     f7.hidePreloader();
                     f7.alert("error en la comunicación con el servidor");
-                },
-                
+                }
             });
-            
         }
     }
     

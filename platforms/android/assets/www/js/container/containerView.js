@@ -51,27 +51,38 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
                 }
                 var imagesIni='<ul id="photoslist" class="'+stClass+'">';
                 var imagesFin='<div class="clearleft"></div></ul>';
+                console.log(data.content);
                 $.each(data.content,function(key,value){
-                    
+                    var shareA="";  
                     if(value.tipo_contenido==1){
-                        imagenes+='<li><a rel="gallery-1" href="http://meew.co/dashmeew'+value.file_name+'"  title="Photo title" class="swipebox"><img src="http://meew.co/dashmeew'+value.file_name+'" alt="image"/></a></li>'
+                        if(localStorage.getItem('compartir')==1){
+                            shareA='<a href="javascript:window.plugins.socialsharing.share(\''+value.description+'\', \''+value.name+'\', \'http://meew.co/dashmeew'+value.file_name+'\', \'\');" style="color:#999"><span class="icon-share"></span><span class="tabbar-label">Compartir</span></a>';
+                        }
+                        imagenes+='<li>'+
+                                '<a rel="gallery-1" href="http://meew.co/dashmeew'+value.file_name+'"  title="'+value.name+'" class="swipebox">'+
+                                    '<img src="http://meew.co/dashmeew'+value.file_name+'" alt="image"/>'+
+                                '</a>'+
+                                shareA+
+                                '</li>';
 //                        imagenes+='<div class="'+stClass+'"><a rel="gallery-1" href="http://meew.co/dashmeew'+value.file_name+'"  title="Photo title" class="swipebox"><img src="http://meew.co/dashmeew'+value.file_name+'" style="width: 100%"></a></div>';
                     }
                     else if(value.tipo_contenido==2){
+                        if(localStorage.getItem('compartir')==1){
+                            shareA='<a href="javascript:window.plugins.socialsharing.share(\''+value.description+'\', \''+value.name+'\',\'\' ,\'http://meew.co/dashmeew'+value.url_video+'\);" style="color:#999"><i class="f7-icons size-25 color-custom">home</i><span class="tabbar-label">Compartir</span></a>';
+                        }
                         videos+='<div class="row" style="text-align: left; ">'+
-                                value.description+
-                                '</div> <br>'+
-                                '<iframe style="width: 100%;height:250px" src="https://www.youtube.com/embed/'+value.url_video+'" frameborder="0" allowfullscreen></iframe>';
+                            value.description+shareA+
+                            '</div> <br>'+
+                            '<iframe style="width: 100%;height:250px" src="https://www.youtube.com/embed/'+value.url_video+'" frameborder="0" allowfullscreen></iframe>';
                     }
                 });
                 var imagesEnd=imagesIni+imagenes+imagesFin;
                 $('.imagesgallery').html(imagesEnd);
                 $('.videosgallery').html(videos); 
-                
-                
                 $(".content-block-tabs").css("background-color", localStorage.getItem('color'));
                 $(".button.active").css("background",localStorage.getItem('color'));
                 $(".button.active").css("opacity","0.6");
+//                $(".container-page").css("height","80%");
 //                f7.alert("asdf");
             break;
             case "2":
@@ -88,7 +99,6 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
                     
                 });
                 $('.container-page').html(imagenes);
-                $('.container-page').append('<a href="#" class="share-link">compartir</a>');
                 
                 break;
             case "3":
@@ -142,8 +152,8 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
                     collapsible: true,
                      active: false
                 });
-                $("#accordion h3 ").css("background-color",localStorage.getItem('color'));
-                $("#accordion h3").css("color",localStorage.getItem('color_icon'));
+                $("#accordion h3 ").css("background-color",localStorage.getItem('color_icon'));
+                $("#accordion h3").css("color",localStorage.getItem('color'));
 //                $("#accordion h3").css("margin","0.2em 0.2em");
 //                $("#accordion h3").css("padding","0.2em 0.2em");
                 
@@ -171,6 +181,9 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
 //            console.log("sadsf");
 //        });
         
+    }
+    function compartir(){
+        console.log("comparte");
     }
     function enviaComentario(datosSop){
         console.log(datosSop);

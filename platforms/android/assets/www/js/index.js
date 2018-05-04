@@ -36,7 +36,7 @@ var app = {
     onDeviceReady: function() {
         console.log('Received Device Ready Event');
         console.log('calling setup push');
-        //navigator.splashscreen.show();
+        navigator.splashscreen.show();
         $(".swipebox").swipebox();
 //        setTimeout('hideSplashScreen()',5000);
 //        navigator.vibrate([1000, 500, 500, 1000, 1000]); 
@@ -59,7 +59,8 @@ var app = {
 //                before: progress.show(),
                 success: function(data) {
 //                    console.log(data);
-                    
+                    var compartir=data.compartir;
+                    localStorage.setItem('compartir',compartir);
                     var parametros=data.parametros;
                     var camposForm=data.campo_registro;
                     var loginRs=data.login_rs;
@@ -84,11 +85,13 @@ var app = {
                                         break;
 
                                 }
-                                $("#icon-rs").append('<img src="images/'+logo+'" alt="" style="width: 100%;cursor: pointer;" class="loginfb" />');
+                                $(".loginfb").append('<img src="images/'+logo+'" alt="" style="width: 100%;cursor: pointer;" />');
                             }
                         });
                     }
                     data=data.estilos;
+                    
+                    
                     localStorage.setItem('campos_form',JSON.stringify(camposForm));
                     localStorage.setItem('login_rs',JSON.stringify(loginRs));
                     localStorage.setItem('parametros',JSON.stringify(parametros));

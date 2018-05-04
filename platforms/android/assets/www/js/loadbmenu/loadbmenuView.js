@@ -130,6 +130,7 @@ define(['hbs!js/container/gallerylbm','hbs!js/container/containerlbm','hbs!js/co
                 break;
             case "3":
 //                var textohtml='<div class="page-content">'+data.content+'</div>';
+                console.log(data.content);
                 $('.planes-page'+params.id+' .page-content-views').html(viewContainer);
                 $('.page-content-articulo').html(data.content);
                 break;

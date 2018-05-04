@@ -420,6 +420,20 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/es6-promise-plugin/www/promise.js",
+        "id": "es6-promise-plugin.Promise",
+        "pluginId": "es6-promise-plugin",
+        "runs": true
+    },
+    {
+        "file": "plugins/cordova-plugin-x-socialsharing/www/SocialSharing.js",
+        "id": "cordova-plugin-x-socialsharing.SocialSharing",
+        "pluginId": "cordova-plugin-x-socialsharing",
+        "clobbers": [
+            "window.plugins.socialsharing"
+        ]
+    },
+    {
         "file": "plugins/cordova-plugin-fcm/www/FCMPlugin.js",
         "id": "cordova-plugin-fcm.FCMPlugin",
         "pluginId": "cordova-plugin-fcm",
@@ -445,6 +459,8 @@ module.exports.metadata =
     "cordova-plugin-splashscreen": "5.0.3-dev",
     "cordova-plugin-vibration": "2.1.6",
     "cordova-plugin-whitelist": "1.3.3",
+    "es6-promise-plugin": "4.2.2",
+    "cordova-plugin-x-socialsharing": "5.3.2",
     "cordova-plugin-fcm": "2.1.2"
 }
 // BOTTOM OF METADATA
