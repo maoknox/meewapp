@@ -13,7 +13,7 @@ define(['hbs!js/list/contact-list-item'], function(template) {
         $.each(JSON.parse(retrivedContent),function(k,v){
              contenido+='<li>'
                     +'<a href="container.html?idmod='+v.id_modulo_app+'&tipomod='+v.tipo_modulo+'&nombremod='+v.nombre_modulo+'" class="tabbar-label-products">'
-                        +'<i class="f7-icons size-50">'+v.icon+'</i><br>'+v.nombre_modulo
+                        +'<span class="'+v.icon+' size-29"></span><span class="tabbar-label" >'+v.nombre_modulo+'</span>'
                     +'</a>'
                 +'</li>';
        });

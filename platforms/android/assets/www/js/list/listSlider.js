@@ -66,9 +66,7 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
                         '<div class="content-block">'+
                         '<span>'+v.nombre_modulo+'</span>'+
                         '<span class="subtitle">'+v.texto_descripcion+'</span>'+
-                        '<a href="container.html?idmod='+v.id_modulo_app+'&tipomod='+encodeURIComponent(v.tipo_modulo)+'&nombremod='+encodeURIComponent(v.nombre_modulo)+'" class="swiper_read_more loadcontent">'+v.texto_button+'</a>'+
-                          
-                          
+                        '<a href="container.html?idmod='+v.id_modulo_app+'&tipomod='+encodeURIComponent(v.tipo_modulo)+'&nombremod='+encodeURIComponent(v.nombre_modulo)+'" class="swiper_read_more loadcontent">'+v.texto_button+'</a>'+                        
                         '</div>'+
                      '</div>';
             mySwiper.appendSlide(contentM);

@@ -25,11 +25,13 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
     var contact=null;
     var $$=Dom7;
     var f7 = new Framework7({
+        modalTitle: "Cortes del monte"
         // Enabled pages rendering using Template7
 //            swipeBackPage: true,
 //            pushState: true,
 //            animateNavBackIcon: true,
 //            template7Pages: true
+
     }); 
 //    f7.alert('Body','Título',function(){
 //        f7.alert('You have clicked the button!!!')
@@ -65,39 +67,50 @@ if (typeof FCMPlugin != 'undefined') {
         f7.closeModal(".popup-tycond",false);
     });
     $(".link-perfil").on("click",function(){
+        $('.popup-dataperfil #inputs-perfil').html("");
         var usuario=JSON.parse(localStorage.getItem('usuarioreg'));
+        console.log(JSON.stringify(usuario)+"---------------");
         $("#form-perf").validate();
         $.each(JSON.parse(localStorage.getItem('campos_form')),function(key,value){
+            console.log(key);
             console.log(usuario[key]);
             if(value.activo==1){
-                if(key!='rango_edad' && key!='genero' && key!='politicas_privacidad_activo'){
-                    var readOnly=""
-                    if(key=='nombre_usuario' || key=='persona_correo'){
-                        readOnly="readonly";
+                if(key!='id_rango_edad' && key!='id_genero'  && key!='politicas_privacidad_activo' && key!='nombre_usuario'){                    
+                    if(key=='persona_correo'){
+                        $('.popup-dataperfil #inputs-perfil').append('<div class="input-login " ><input readonly type="text"  value="'+usuario[key]+'" class="line-input"  ><input name="'+key+'" id="'+key+'" type="hidden"  value="'+usuario[key]+'"  ></div><br>');                   
                     }
-                    $('.popup-dataperfil #inputs-perfil').append('<div class="input-login " ><input name="'+key+'" id="'+key+'" placeholder="'+value.label+'" type="text" class="line-input" '+readOnly+' value="'+usuario[key]+'"></div><br>');
-                }
-                else{
-                    if(key!='politicas_privacidad_activo'){
-                        $('.popup-dataperfil #inputs-perfil').append('<div class="input-login" ><select name="'+key+'" id="'+key+'" class="line-input"><option value="">Seleccione '+value.label+'...</option></select></div><br>');                        
-                        $.each(JSON.parse(localStorage.getItem('parametros')),function(keypar,valuepar){
-                            var selected="";
-                                if(valuepar.idparametros==usuario[key]){
-                                    selected='selected="selected"';
+                    else{ 
+                        $('.popup-dataperfil #inputs-perfil').append('<div class="input-login " ><input name="'+key+'" id="'+key+'" placeholder="'+value.label+'" type="text" class="line-input" value="'+usuario[key]+'"  ></div><br>');                   
+                        if(key=='persona_telefono'){
+                            $("[name="+key+"]").rules("add",{
+                                required: true,
+                                phoneUS: true
+                                ,messages:{
+                                    required:"Campo requerido",
+                                    phoneUS: "Teléfono inválido"
                                 }
-                            if(key=="rango_edad" && valuepar.tipo=="rango_edad"){
-                                
-                                $("#"+key).append("<option value='"+valuepar.idparametros+"' "+selected+">"+valuepar.nombre+"</option>");
-                            }
-                            else if(key=="genero" && valuepar.tipo=="genero"){
-                                $("#"+key).append("<option value='"+valuepar.idparametros+"' "+selected+">"+valuepar.nombre+"</option>");
-                            }
-
-                        });
+                            });
+                        }
+                        else{
+                            $("[name="+key+"]").rules("add",{required: true,messages:{required:"Campo requerido"}});
+                        }
                     }
-                }
-                if(key!='politicas_privacidad_activo'){
+                }else if(key=='id_rango_edad' || key=='id_genero'){
+                    $('.popup-dataperfil #inputs-perfil').append('<div class="input-login" ><select name="'+key+'" id="'+key+'" class="line-input"><option value="">Seleccione '+value.label+'...</option></select></div><br>');                        
                     $("[name="+key+"]").rules("add",{required: true,messages:{required:"Campo requerido"}});
+                    $.each(JSON.parse(localStorage.getItem('parametros')),function(keypar,valuepar){
+                        if(key=="id_rango_edad" && valuepar.tipo=="rango_edad"){
+                            selected="";
+                            if(valuepar.idparametros==usuario[key]){selected="selected";}
+                            $("#"+key).append("<option value='"+valuepar.idparametros+"' "+selected+">"+valuepar.nombre+"</option>");
+                        }
+                        else if(key=="id_genero" && valuepar.tipo=="genero"){
+                            selected="";
+                            if(valuepar.idparametros==usuario[key]){selected="selected";}
+                            $("#"+key).append("<option value='"+valuepar.idparametros+"'  "+selected+">"+valuepar.nombre+"</option>");
+                        }
+
+                    });
                 }
                 $(".line-input").css("border","1px solid "+localStorage.getItem('color'));
             }
@@ -113,16 +126,23 @@ if (typeof FCMPlugin != 'undefined') {
     $$('.popback-linkperfil').on('click', function () {
         f7.closeModal(".popup-dataperfil",false);
     });
-    $(".loadcontent").on('click',function(){
-//        console.log("load");
-    });
+//    $(".loadcontent").on('click',function(){
+////        console.log("load");
+//    });
     localStorage.setItem("pagina",0);
     localStorage.setItem('email', "");
     var email=localStorage.getItem('email');
+    
 //    f7.alert(email);
     var ini=false;
-    if(email==null || email.length==0){
+    if(email=="" || email==null || email.length==0){
         f7.popup('.popup-about',false);
+    }
+    else{
+        console.log(JSON.parse(localStorage.getItem('dataapp')));
+        data=JSON.parse(localStorage.getItem('dataapp'));
+        cargaEstilos(data.image,data.color_icon,data.color);
+        cargaMenuBottom(JSON.stringify(data.contmb),data.color_icon,data.color);
     }
     $$(".btnsharefb").on("click",function(){
         console.log("share");
@@ -271,7 +291,35 @@ if (typeof FCMPlugin != 'undefined') {
     
     $$(".envia_clave").on("click",function(){
         if ($("#form-camclave").valid()) {
-            
+            var formClave = f7.formToJSON('#form-camclave');
+            formClave.persona_correo=localStorage.getItem('email');
+            console.log(formClave);
+            $.ajax({//http://meew.co/dashmeew/
+//                url: 'http://meew.co/dashmeew/index.php/site/modificaDatosApp',
+                url: 'http://localhost/meew/index.php/site/cambiaClaveMovile',
+                dataType: 'json',
+                data:formClave,
+                type: 'post',
+                async:true,
+                crossDomain : true,
+                before: f7.showPreloader(),
+                success: function(data) {
+                    
+                    f7.hidePreloader();
+                    if(data.status=='exito'){
+                      f7.alert("Contraseña actualizada");
+                    }
+                    else{
+                        f7.alert(data.msg);
+                    }
+                },
+                error:function(error){
+                    f7.hidePreloader();
+                    f7.alert("Error en comunicación con el servidor, revise la conexión a internet o inténtelo más tarde.");
+//                    $('.list-block-label').html(JSON.stringify(error));
+                },
+                
+            });
         }
     });
     $$(".popback-cl").on('click',function(){      
@@ -286,10 +334,9 @@ if (typeof FCMPlugin != 'undefined') {
     function modificaDatos(){
         if ($("#form-perf").valid()) {
             var formModifData = f7.formToJSON('#form-perf');
-            
             $.ajax({//http://meew.co/dashmeew/
-                url: 'http://meew.co/dashmeew/index.php/site/modificaDatosApp',
-//                url: 'http://localhost/meew/index.php/site/loginPlatformMovile',
+//                url: 'http://meew.co/dashmeew/index.php/site/modificaDatosApp',
+                url: 'http://localhost/meew/index.php/site/modificaPerfilMovile',
                 dataType: 'json',
                 data:formModifData,
                 type: 'post',
@@ -322,8 +369,8 @@ if (typeof FCMPlugin != 'undefined') {
             contact.setValues(formInput);
             var datos=JSON.stringify(contact);
             $.ajax({//http://meew.co/dashmeew/
-                url: 'http://meew.co/dashmeew/index.php/site/loginPlatformMovile',
-//                url: 'http://localhost/meew/index.php/site/loginPlatformMovile',
+//                url: 'http://meew.co/dashmeew/index.php/site/loginPlatformMovile',
+                url: 'http://localhost/meew/index.php/site/loginPlatformMovile',
                 dataType: 'json',
                 data:JSON.parse(datos),
                 type: 'post',
@@ -341,6 +388,7 @@ if (typeof FCMPlugin != 'undefined') {
 //                        $('.toolbar').css('background',data.color);
 //                        $('.navbar').css('background',data.color);
 //                        $('.subnavbar').css('background',data.color);
+                        localStorage.setItem('dataapp', JSON.stringify(data));
                         localStorage.setItem('tycond', data.tycond);
                         localStorage.setItem('usuarioreg', JSON.stringify(data.usuario));
                         localStorage.setItem('content', JSON.stringify(data.contplantilla));
@@ -353,6 +401,9 @@ if (typeof FCMPlugin != 'undefined') {
                         cargaEstilos(data.image,data.color_icon,data.color);
                         cargaMenuBottom(JSON.stringify(data.contmb),data.color_icon,data.color);
 //                        console.log(localStorage.getItem("personanombre")+"---------------------");
+                        $(".user-icon").append('<span class="icon-user size-29"></span>');
+                        $(".tyc-icon").append('<span class="icon-book size-29"></span>');
+                        $(".cerrar-icon").append('<span class="icon-switch size-29"></span>');
                         $(".men-lat").css("color",data.color);
                         $(".border_lat").css("border-top","2px solid "+data.color);
                         Router.load("list");
@@ -407,12 +458,18 @@ if (typeof FCMPlugin != 'undefined') {
 //            });
 //            $('.tab-link .active').css('color','#000');
             ret["view"+number]=window["view"+number];
-            $('.view-1').css('color',"#ffffff");
+            $('.view-1').css('color',"#fff");
+            $('.view-1').on('click',function(){
+                $('.tab-link').css('color',colorIcon);
+                $('.view-1').css('color',"#fff");
+            });
+            
 //            $('.view-1').on('click',function(){
 //                $('.tab-link').css('color',colorIcon);
 //                $(".view-1").css('color',"#fff");
 //                mainView.router.back();
 //            });
+            
             $(".bars-pers").css("color",colorIcon);
             $(".toolbar-inner").css("background-color",color);
             $(".toolbar-inner").css("opacity","0.6");
@@ -426,6 +483,7 @@ if (typeof FCMPlugin != 'undefined') {
     }
     function creaEvento(n,v,colorIcon,color){
         $(".view-"+n).on('click',function(){
+            console.log(colorIcon);
             $('.tab-link').css('color',colorIcon);
 //                console.log("pasa a vista "+n);
                 $(".view-"+n).css('color',"#fff");
@@ -466,11 +524,59 @@ if (typeof FCMPlugin != 'undefined') {
         console.log(localStorage.getItem('campos_form'));
         $.each(JSON.parse(localStorage.getItem('campos_form')),function(key,value){
             if(value.activo==1){
-                if(key!='rango_edad' && key!='genero' && key!='politicas_privacidad_activo'){
-                    $('.popup-register #inputs-reg').append('<div class="input-login " ><input name="'+key+'" id="'+key+'" placeholder="'+value.label+'" type="text" class="line-input"  ></div><br>');
+                if(key!='id_rango_edad' && key!='id_genero' && key!='politicas_privacidad_activo'){
+                    $('.popup-register #inputs-reg').append('<div class="input-login " ><input name="'+key+'" id="'+key+'" placeholder="'+value.label+'" type="text" class="line-input"  ></div><br>');                   
+                    if(key=='persona_correo'){
+                        $("[name="+key+"]").rules("add",{
+                            required: true,
+                            emailcheck: true
+                            ,messages:{
+                                required:"Campo requerido",
+                                emailcheck: "El correo debe tener formato 1234@abcd.com"
+                            }
+                        });
+                        $.validator.addMethod("emailcheck", function(value) {
+                            return /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(value);
+                        });
+                    }else if(key=='persona_telefono'){
+                        $("[name="+key+"]").rules("add",{
+                            required: true,
+                            phoneUS: true
+                            ,messages:{
+                                required:"Campo requerido",
+                                phoneUS: "Teléfono inválido"
+                            }
+                        });
+                    }
+                    else{
+                        $("[name="+key+"]").rules("add",{required: true,messages:{required:"Campo requerido"}});
+                    }
                     if(key=='nombre_usuario'){
                         $('.popup-register #inputs-reg').append('<div class="input-login " ><input name="passwdreg" id="passwdreg" placeholder="Password" type="password" class="line-input"  ></div><br>');
                         $('.popup-register #inputs-reg').append('<div class="input-login " ><input name="passwordii" id="passwordii" placeholder="Confirmar password" type="password" class="line-input"  ></div><br>');                        
+                        $("#passwdreg").rules("add",{
+                            required: true,
+                            pwcheck: true,
+                            minlength:8 
+                            ,messages:{
+                                required:"Campo requerido",
+                                pwcheck: "El password debe tener al menos una letra en minúscula y al menos un dígito",
+                                minlength: "El password debe tener mínimo 8 carácteres"
+                            }
+                        });
+                        $("#passwordii").rules("add",{
+                                required: true,
+                                equalTo: '#passwdreg'
+                            ,messages:{
+                                required:"Campo requerido",
+                                equalTo: "La confirmación de password no coincide",
+                            }
+                        });
+                        $.validator.addMethod("pwcheck", function(value) {
+                            return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
+                                && /[a-z]/.test(value) // has a lowercase letter
+                                && /\d/.test(value) // has a digit
+                        });
                     }
                 }
                 else{
@@ -479,18 +585,20 @@ if (typeof FCMPlugin != 'undefined') {
                         $('.popup-register #inputs-reg').append('<div class="input-login" style="float:left;display:inline"><label><input  type="radio" name="'+key+'" id="'+key+'_si" value="1" class="line-input">Si</label></div>');                                                
                         $('.popup-register #inputs-reg').append('<div class="input-login" ><label><input type="radio" name="'+key+'" id="'+key+'_no" value="0" class="line-input">No</label></div><br>');
                         $('.popup-register #inputs-reg').append('<div class="input-login link-tycondreg" ><a href="#" style="color:#999"><u>Términos y condiciones</u></a></div><br>');
-                        $('.link-tycondreg').on("click",function(){
-                            console.log("terminos");
+                        $('.link-tycondreg').on("click",function(){                            
                             $(".popup-tycond .list-block-contact").html(localStorage.getItem('tycond'));
                             f7.popup('.popup-tycond',false);
                         });
+                        $("[name="+key+"]").rules("add",{required: true,messages:{required:"Campo requerido"}});
+                        
                     }else {
                         $('.popup-register #inputs-reg').append('<div class="input-login" ><select name="'+key+'" id="'+key+'" class="line-input"><option value="">Seleccione '+value.label+'...</option></select></div><br>');                        
+                        $("[name="+key+"]").rules("add",{required: true,messages:{required:"Campo requerido"}});
                         $.each(JSON.parse(localStorage.getItem('parametros')),function(keypar,valuepar){
-                            if(key=="rango_edad" && valuepar.tipo=="rango_edad"){
+                            if(key=="id_rango_edad" && valuepar.tipo=="rango_edad"){
                                 $("#"+key).append("<option value='"+valuepar.idparametros+"'>"+valuepar.nombre+"</option>");
                             }
-                            else if(key=="genero" && valuepar.tipo=="genero"){
+                            else if(key=="id_genero" && valuepar.tipo=="genero"){
                                 $("#"+key).append("<option value='"+valuepar.idparametros+"'>"+valuepar.nombre+"</option>");
                             }
 
@@ -498,34 +606,6 @@ if (typeof FCMPlugin != 'undefined') {
                     }
 
                 }
-                
-                
-                if(key=='nombre_usuario'){
-                    $("#passwdreg").rules("add",{
-                        required: true,
-                        pwcheck: true,
-                        minlength:8 
-                        ,messages:{
-                            required:"Campo requerido",
-                            pwcheck: "El password debe tener al menos una letra en minúscula y al menos un dígito",
-                            minlength: "El password debe tener mínimo 8 carácteres"
-                        }
-                    });
-                    $("#passwordii").rules("add",{
-                            required: true,
-                            equalTo: '#passwdreg'
-                        ,messages:{
-                            required:"Campo requerido",
-                            equalTo: "La confirmación de password no coincide",
-                        }
-                    });
-                    $.validator.addMethod("pwcheck", function(value) {
-                        return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
-                            && /[a-z]/.test(value) // has a lowercase letter
-                            && /\d/.test(value) // has a digit
-                     });
-                }
-                $("[name="+key+"]").rules("add",{required: true,messages:{required:"Campo requerido"}});
                 $(".line-input").css("border","1px solid "+localStorage.getItem('color'));
             }
          });
@@ -557,7 +637,7 @@ if (typeof FCMPlugin != 'undefined') {
     function registerUser(){
         if ($("#fomr-serv").valid()) {
             contact = new Contact();
-            var formInput = $('#fomr-serv').serialize();
+            var formInput = $('#fomr-serv').serialize()+"&idapplication="+localStorage.getItem('idapplication');
 //            contact.setValues(formInput);
 //            f7.alert(contact.Usuario["accept"]);
 //            return false;
@@ -567,7 +647,8 @@ if (typeof FCMPlugin != 'undefined') {
 //            }
             var datos=formInput;
             $.ajax({
-                url: 'http://meew.co/dashmeew/index.php/site/registerPlatformMovile',
+                url: 'http://localhost/meew/index.php/site/registerPlatformMovile',
+//                url: 'http://meew.co/dashmeew/index.php/site/registerPlatformMovile',
                 dataType: 'json',
                 data:datos,
                 type: 'post',
@@ -578,9 +659,41 @@ if (typeof FCMPlugin != 'undefined') {
                     f7.hidePreloader();
                     f7.alert(data.msg);
                     if(data.status=='exito'){
-//                        console.log(contact.Usuario["email"]);
-                        localStorage.setItem('email', contact.Usuario["email"]);
+                        localStorage.setItem('tycond', data.tycond);
+                        localStorage.setItem('usuarioreg', JSON.stringify(data.usuario));
+                        localStorage.setItem('content', JSON.stringify(data.contplantilla));
+                        localStorage.setItem('email', data.usuario.email);
+                        localStorage.setItem('personid', data.usuario.personid);
+                        localStorage.setItem('personanombre', data.usuario.nombre);
+                        localStorage.setItem('token', data.usuario.token);
+                        localStorage.setItem("idplantilla", data.idplantilla);
                         f7.closeModal(".popup-register",false);
+                        cargaEstilos(data.image,data.color_icon,data.color);
+                        cargaMenuBottom(JSON.stringify(data.contmb),data.color_icon,data.color);
+//                        console.log(localStorage.getItem("personanombre")+"---------------------");
+                        $(".user-icon").append('<span class="icon-user size-29"></span>');
+                        $(".tyc-icon").append('<span class="icon-book size-29"></span>');
+                        $(".cerrar-icon").append('<span class="icon-switch size-29"></span>');
+                        $(".men-lat").css("color",data.color);
+                        $(".border_lat").css("border-top","2px solid "+data.color);
+                        Router.load("list");
+                        $("#nombre-usuario").text(localStorage.getItem('personanombre'));
+//                        Router.init();
+
+                    }
+                    else if(data.status=='novalidate'){
+                        var msg="";
+                        f7.hidePreloader();
+                        $.each(data.validate,function(key,value){
+                            if(value!=false){
+                                msg=msg+value+"<br>";
+                            }
+                        });
+                        f7.alert(msg);   
+                    }
+                    else if(data.status=='noexito'){
+                        f7.hidePreloader();
+                        f7.alert(data.msg);
                     }
                 },
                 error:function(error){

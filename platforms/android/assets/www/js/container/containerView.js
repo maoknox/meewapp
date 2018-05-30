@@ -154,6 +154,7 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
                 });
                 $("#accordion h3 ").css("background-color",localStorage.getItem('color_icon'));
                 $("#accordion h3").css("color",localStorage.getItem('color'));
+                $("#accordion h3").css("border","2px solid "+localStorage.getItem('color'));
 //                $("#accordion h3").css("margin","0.2em 0.2em");
 //                $("#accordion h3").css("padding","0.2em 0.2em");
                 
