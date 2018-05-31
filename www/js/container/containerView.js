@@ -1,5 +1,7 @@
 define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/container/contacto','hbs!js/container/soporte'], function(viewGallery,viewContainer,viewContacto,viewSoporte) {
-    var f7 = new Framework7();
+    var f7 = new Framework7({
+        modalTitle: "Cortes del monte"
+    });
     function render(params) {
         var content="";
         $.ajax({
@@ -109,9 +111,34 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
             case "4":
                 $('.container-page').html(viewContacto);
                 $('.nombre').text("Mi nombre es: "+localStorage.getItem('personanombre'));
+                $('.email').val(localStorage.getItem('email'));
                 $("#emailpersona").text(data.content.correo_contacto);
                 $("#celularpersona").text(data.content.telefono);
                 $("#address").text("  "+data.content.direccion);
+                $("#form-contacto").validate();
+                $("[name=email]").rules("add",{
+                    required: true,
+                    emailcheck: true
+                    ,messages:{
+                        required:"Campo requerido",
+                        emailcheck: "El correo debe tener formato 1234@abcd.com"
+                    }
+                });
+                $.validator.addMethod("emailcheck", function(value) {
+                    return /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(value);
+                });
+                $("[name=asunto]").rules("add",{
+                    required: true,
+                    messages:{
+                        required:"Campo requerido",
+                    }
+                });
+                $("[name=message]").rules("add",{
+                    required: true,
+                    messages:{
+                        required:"Campo requerido",
+                    }
+                });
                 console.log(data.content);
                 initializeMap(data.content);
                 $(".btncompra").css("color",localStorage.getItem('color'))
@@ -121,27 +148,23 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
                 $(".item-cl-srv").css("border-bottom","2px solid "+localStorage.getItem('color'));
                 $(".bder-left").css("border-left","2px solid "+localStorage.getItem('color'));
                 $(".line-input").css("border","1px solid "+localStorage.getItem('color'));
-                
+                $(".msjcontacto").on("click",function(){
+                    enviaMsjContacto();
+                });
                 break;
             case "5":
-                console.log(data.content);
-//                var opciones='<option value="">Seleccione...</option>';
-//                 $.each(data.content,function(key,value){
-//                        opciones+='<option value="'+value.idtema_soporte+'">'+value.titulo+'</option>';
-//                });
-                
                 $('.container-page').html(viewSoporte);
                 var soporteDiv="";
                 $.each(data.content,function(key,value){
                     soporteDiv+="<h3 '>"+value.titulo+"</h3><div>";
                     $.each(value.subtema,function(keys,values){
-                        soporteDiv+='<div class="tema-sub" ><div class="subtema-sub">'+value.titulo+'</div><div><textarea class="tema-inqu" name="'+values.idtema_soporte+'" placeholder="Escriba aquí si desea agregar un detalle adicional a su inquietud"></textarea></div></div>';
+                        soporteDiv+='<div class="tema-sub" ><div class="subtema-sub">'+values.titulo+'</div><div><textarea class="tema-inqu" name="Soporte['+value.idtema_soporte+'_'+values.idtema_soporte+']" placeholder="Escriba aquí si desea agregar un detalle adicional a su inquietud"></textarea></div></div>';
                     });
                     soporteDiv+="</div>";
                 });
                 $("#menu-sl").html('<a href="#" class="envia-form-sop">enviar</a>');
                 $(".envia-form-sop").on('click',function(){
-                    var datosSop=$("#form_temasop").serialize();
+                    var datosSop=$("#form_temasop").serialize()+"&persona_correo="+localStorage.getItem('email')+"&idapp="+localStorage.getItem('idapplication');
                     enviaComentario(datosSop);
                 });
                 $( "#accordion" ).html(soporteDiv);
@@ -186,11 +209,42 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
     function compartir(){
         console.log("comparte");
     }
+    function enviaMsjContacto(){
+       if($("#form-contacto").valid()){
+           var dataContacto=$("#form-contacto").serialize()+"&persona_correo="+localStorage.getItem('email')+"&idapp="+localStorage.getItem('idapplication');
+           $.ajax({//http://meew.co/dashmeew/
+            url: 'http://meew.co/dashmeew/index.php/site/enviaTemaContacto',
+//                url: 'http://localhost/meew/index.php/site/enviaTemaContacto',
+                dataType: 'json',
+                data:dataContacto,
+                type: 'post',
+                async:true,
+                crossDomain : true,
+                before: f7.showPreloader(),
+                success: function(data) {
+
+                    f7.hidePreloader();
+                    if(data.status=='exito'){
+                      f7.alert(data.msg);
+                    }
+                    else{
+                        f7.alert(data.msg);
+                    }
+                },
+                error:function(error){
+                    f7.hidePreloader();
+                    f7.alert("Error en comunicación con el servidor, revise la conexión a internet o inténtelo más tarde.");
+    //                    $('.list-block-label').html(JSON.stringify(error));
+                },
+
+            });
+       }
+    }
     function enviaComentario(datosSop){
         console.log(datosSop);
         $.ajax({//http://meew.co/dashmeew/
-            url: 'http://meew.co/dashmeew/index.php/site/guradaDatosSoporte',
-//                url: 'http://localhost/meew/index.php/site/loginPlatformMovile',
+//            url: 'http://meew.co/dashmeew/index.php/site/enviaTemaSoporte',
+                url: 'http://localhost/meew/index.php/site/enviaTemaSoporte',
             dataType: 'json',
             data:datosSop,
             type: 'post',
@@ -201,7 +255,7 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
 
                 f7.hidePreloader();
                 if(data.status=='exito'){
-                  f7.alert("Datos modificados satisfactoriamente");
+                  f7.alert(data.msg);
                 }
                 else{
                     f7.alert(data.msg);

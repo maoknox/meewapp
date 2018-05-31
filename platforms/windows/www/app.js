@@ -11,14 +11,15 @@
     }
 });
 define('app',['js/router','js/contactModel'], function(Router,Contact) {
-    Router.init();
+    Router.init(); 
+//    var url="http://localhost/meew";
+    var url="http://meew.co/dashmeew";
     FacebookInAppBrowser.settings.appId = '1999950346892051';
     FacebookInAppBrowser.settings.redirectUrl = 'https://www.facebook.com/connect/login_success.html';
     FacebookInAppBrowser.settings.permissions = 'email';
 
 // Optional
-    FacebookInAppBrowser.settings.timeoutDuration = 7500;
-   
+    FacebookInAppBrowser.settings.timeoutDuration = 7500;   
     
     //mensajes push
     
@@ -36,16 +37,16 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
 //    f7.alert('Body','Título',function(){
 //        f7.alert('You have clicked the button!!!')
 //    });
-if (typeof FCMPlugin != 'undefined') {
-   FCMPlugin.onNotification(function(data){
-//            navigator.vibrate([1000]); 
-        if(data.wasTapped){
-            f7.alert(data.body,data.title);
-        }else{ 
-            f7.alert(data.body,data.title);
-        }
-    });
-}
+//if (typeof FCMPlugin != 'undefined') {
+//   FCMPlugin.onNotification(function(data){
+////            navigator.vibrate([1000]); 
+//        if(data.wasTapped){
+//            f7.alert(data.body,data.title);
+//        }else{ 
+//            f7.alert(data.body,data.title);
+//        }
+//    });
+//}
 
 //    
     var ret={
@@ -69,7 +70,7 @@ if (typeof FCMPlugin != 'undefined') {
     $(".link-perfil").on("click",function(){
         $('.popup-dataperfil #inputs-perfil').html("");
         var usuario=JSON.parse(localStorage.getItem('usuarioreg'));
-        console.log(JSON.stringify(usuario)+"---------------");
+        
         $("#form-perf").validate();
         $.each(JSON.parse(localStorage.getItem('campos_form')),function(key,value){
             console.log(key);
@@ -181,49 +182,115 @@ if (typeof FCMPlugin != 'undefined') {
     $('.loginfb').on('click',function(){
         console.log("entra a login facebook");
         iniciaSesionFb();
+        
     });
     function iniciaSesionFb(){
         f7.showPreloader();
+        var success="";
+        var dataUser="";
         FacebookInAppBrowser.login({
             send: function() {
                     console.log('login opened');
 //                    f7.hidePreloader();
             },
-            success: function(access_token) {
+            success: function(access_token,userInfo) {
                 f7.hidePreloader();
-                localStorage.setItem('email', "email");
-                    console.log('done, access token: ' + access_token);
-                    f7.closeModal(".login-screen",false);
+                success=1;
+                console.log('done, access token: ' + access_token);
+//                    
+                
+                
             },
             denied: function() {
                 f7.hidePreloader();
                     console.log('user denied');
+                    
             },
             timeout: function(){
                 f7.hidePreloader();
                 console.log('a timeout has occurred, probably a bad internet connection');
             },
             complete: function(access_token) {
-                f7.hidePreloader();
+                f7.hidePreloader(); 
                     console.log('window closed');
-                    if(access_token) {
-                            console.log(access_token);
-                    } else {
-                            console.log('no access token');
+                    
+                    FacebookInAppBrowser.getInfo(function(response) {
+                    if(response) {
+                        localStorage.setItem("datafb",response);
+                        console.log(response);
+                        response.idapp=localStorage.getItem('idapplication');
+        $.ajax({//http://meew.co/dashmeew/
+//                url: 'http://meew.co/dashmeew/index.php/site/loginPlatformMovile',
+                url: url+'/index.php/site/loginMFBook',
+                dataType: 'json',
+                data:response,
+                type: 'post',
+                async:true,
+//                crossDomain : true,
+                before: f7.showPreloader(),
+                success: function(data) {
+//                   
+                    
+                    f7.hidePreloader();
+                    if(data.status=='exito'){
+                        console.log(JSON.stringify(data)+"------------------------------------------------------------------");
+//                        $('.toolbar').css('background',data.color);
+//                        $('.navbar').css('background',data.color);
+//                        $('.subnavbar').css('background',data.color);
+                        localStorage.setItem('dataapp', JSON.stringify(data));
+                        localStorage.setItem('tycond', data.tycond);
+                        localStorage.setItem('usuarioreg', JSON.stringify(data.usuario));
+                        localStorage.setItem('content', JSON.stringify(data.contplantilla));
+                        localStorage.setItem('email', data.usuario.email);
+                        localStorage.setItem('personid', data.usuario.personid);
+                        localStorage.setItem('personanombre', data.usuario.nombre);
+                        localStorage.setItem('token', data.usuario.token);
+                        localStorage.setItem("idplantilla", data.idplantilla);
+                        f7.closeModal(".login-screen",false);
+                        cargaEstilos(data.image,data.color_icon,data.color);
+                        cargaMenuBottom(JSON.stringify(data.contmb),data.color_icon,data.color);
+//                        console.log(localStorage.getItem("personanombre")+"---------------------");
+                        $(".user-icon").append('<span class="icon-user size-29"></span>');
+                        $(".tyc-icon").append('<span class="icon-book size-29"></span>');
+                        $(".cerrar-icon").append('<span class="icon-switch size-29"></span>');
+                        $(".men-lat").css("color",data.color);
+                        $(".border_lat").css("border-top","2px solid "+data.color);
+                        Router.load("list");
+                        $("#nombre-usuario").text(localStorage.getItem('personanombre'));
+//                        Router.init();
                     }
+                    else{
+                        f7.alert(data.msg);
+                    }
+                },
+                error:function(error){
+                    f7.hidePreloader();
+                    f7.alert("Error en comunicación con el servidor, revise la conexión a internet o inténtelo más tarde.");
+                    console.log(JSON.stringify(error));
+//                    $('.list-block-label').html(JSON.stringify(error));
+                },
+                
+            });
+                    }
+                });
+//                f7.closeModal(".login-screen",false);
+               
+                        
             },
             userInfo: function(userInfo) {
+                dataUser=userInfo;
                 f7.hidePreloader();
-                    if(userInfo) {
-                            console.log(JSON.stringify(userInfo));
-                    } else {
-                            console.log('no user info');
-                    }
+//                    if(userInfo) {
+//                            console.log("------"+JSON.stringify(userInfo));
+//                    } else {
+//                            console.log('no user info');
+//                    }
             },
             error:function(){
                 f7.hidePreloader();
             }
         });
+//        console.log(localStorage.getItem("datafb"));
     }
     
     var mainView = f7.addView('.view-main', {
@@ -296,7 +363,7 @@ if (typeof FCMPlugin != 'undefined') {
             console.log(formClave);
             $.ajax({//http://meew.co/dashmeew/
 //                url: 'http://meew.co/dashmeew/index.php/site/modificaDatosApp',
-                url: 'http://localhost/meew/index.php/site/cambiaClaveMovile',
+                url: url+'/index.php/site/cambiaClaveMovile',
                 dataType: 'json',
                 data:formClave,
                 type: 'post',
@@ -336,7 +403,7 @@ if (typeof FCMPlugin != 'undefined') {
             var formModifData = f7.formToJSON('#form-perf');
             $.ajax({//http://meew.co/dashmeew/
 //                url: 'http://meew.co/dashmeew/index.php/site/modificaDatosApp',
-                url: 'http://localhost/meew/index.php/site/modificaPerfilMovile',
+                url: url+'/index.php/site/modificaPerfilMovile',
                 dataType: 'json',
                 data:formModifData,
                 type: 'post',
@@ -370,7 +437,7 @@ if (typeof FCMPlugin != 'undefined') {
             var datos=JSON.stringify(contact);
             $.ajax({//http://meew.co/dashmeew/
 //                url: 'http://meew.co/dashmeew/index.php/site/loginPlatformMovile',
-                url: 'http://localhost/meew/index.php/site/loginPlatformMovile',
+                url: url+'/index.php/site/loginPlatformMovile',
                 dataType: 'json',
                 data:JSON.parse(datos),
                 type: 'post',
@@ -647,7 +714,7 @@ if (typeof FCMPlugin != 'undefined') {
 //            }
             var datos=formInput;
             $.ajax({
-                url: 'http://localhost/meew/index.php/site/registerPlatformMovile',
+                url: url+'/index.php/site/registerPlatformMovile',
 //                url: 'http://meew.co/dashmeew/index.php/site/registerPlatformMovile',
                 dataType: 'json',
                 data:datos,
