@@ -37,16 +37,16 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
 //    f7.alert('Body','Título',function(){
 //        f7.alert('You have clicked the button!!!')
 //    });
-//if (typeof FCMPlugin != 'undefined') {
-//   FCMPlugin.onNotification(function(data){
-////            navigator.vibrate([1000]); 
-//        if(data.wasTapped){
-//            f7.alert(data.body,data.title);
-//        }else{ 
-//            f7.alert(data.body,data.title);
-//        }
-//    });
-//}
+if (typeof FCMPlugin != 'undefined') {
+   FCMPlugin.onNotification(function(data){
+//            navigator.vibrate([1000]); 
+        if(data.wasTapped){
+            f7.alert(data.body,data.title);
+        }else{ 
+            f7.alert(data.body,data.title);
+        }
+    });
+}
 
 //    
     var ret={

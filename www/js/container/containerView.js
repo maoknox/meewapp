@@ -244,7 +244,7 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
         console.log(datosSop);
         $.ajax({//http://meew.co/dashmeew/
 //            url: 'http://meew.co/dashmeew/index.php/site/enviaTemaSoporte',
-                url: 'http://localhost/meew/index.php/site/enviaTemaSoporte',
+                url: 'http://meew.co/dashmeew/index.php/site/enviaTemaSoporte',
             dataType: 'json',
             data:datosSop,
             type: 'post',

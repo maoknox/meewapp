@@ -1,4 +1,4 @@
-define(['hbs!js/container/gallerylbm','hbs!js/container/containerlbm','hbs!js/container/contactolbm','hbs!js/container/soporte'], function(viewGallery,viewContainer,viewContacto,viewSoporte) {
+define(['hbs!js/container/gallerylbm','hbs!js/container/containerlbm','hbs!js/container/contactolbm','hbs!js/container/soportelbm'], function(viewGallery,viewContainer,viewContacto,viewSoporte) {
     var f7 = new Framework7();
     function render(params) {
 //        console.log(params.idmod);
@@ -136,19 +136,91 @@ define(['hbs!js/container/gallerylbm','hbs!js/container/containerlbm','hbs!js/co
                 break;
             case "4":
                 $('.planes-page'+params.id+' .page-content-views').html(viewContacto);
-//                $('.nombre').text(localStorage.getItem('personanombre'));
-//                initialize();
-console.log(data.content);
+//                $('.nombre').text("Mi nombre es: "+localStorage.getItem('personanombre'));
+                $('.email').val(localStorage.getItem('email'));
+                $("#emailpersona").text(data.content.correo_contacto);
+                $("#celularpersona").text(data.content.telefono);
+                $("#address").text("  "+data.content.direccion);
+                $("#form-contacto").validate();
+                $("[name=email]").rules("add",{
+                    required: true,
+                    emailcheck: true
+                    ,messages:{
+                        required:"Campo requerido",
+                        emailcheck: "El correo debe tener formato 1234@abcd.com"
+                    }
+                });
+                $.validator.addMethod("emailcheck", function(value) {
+                    return /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(value);
+                });
+                $("[name=asunto]").rules("add",{
+                    required: true,
+                    messages:{
+                        required:"Campo requerido",
+                    }
+                });
+                $("[name=message]").rules("add",{
+                    required: true,
+                    messages:{
+                        required:"Campo requerido",
+                    }
+                });
+                console.log(data.content);
+                initializeMap(data.content);
+                $(".btncompra").css("color",localStorage.getItem('color'))
+                $(".btncompra").css("border","1px solid "+localStorage.getItem('color'));
+                $(".btncompra").css({"margin-left":"auto","margin-right":"auto"});
+                $(".line-bottom").css("border-bottom","2px solid "+localStorage.getItem('color'));
+                $(".item-cl-srv").css("border-bottom","2px solid "+localStorage.getItem('color'));
+                $(".bder-left").css("border-left","2px solid "+localStorage.getItem('color'));
+                $(".line-input").css("border","1px solid "+localStorage.getItem('color'));
+                $(".msjcontacto").on("click",function(){
+                    enviaMsjContacto();
+                });
                 break;
             case "5":
-//                console.log(data.content);
-                var opciones='<option value="">Seleccione...</option>';
-                 $.each(data.content,function(key,value){
-                        opciones+='<option value="'+value.idtema_soporte+'">'+value.titulo+'</option>';
-                });
                 $('.planes-page'+params.id+' .page-content-views').html(viewSoporte);
-                $('.temasoporte').html(opciones);
+                var soporteDiv="";
+                $.each(data.content,function(key,value){
+                    soporteDiv+="<h3 '>"+value.titulo+"</h3><div>";
+                    $.each(value.subtema,function(keys,values){
+                        soporteDiv+='<div class="tema-sub" ><div class="subtema-sub">'+values.titulo+'</div><div><textarea class="tema-inqu" name="Soporte['+value.idtema_soporte+'_'+values.idtema_soporte+']" placeholder="Escriba aquí si desea agregar un detalle adicional a su inquietud"></textarea></div></div>';
+                    });
+                    soporteDiv+="</div>";
+                });
+                $("#menu-sl").html('<a href="#" class="envia-form-sop">enviar</a>');
+                $(".envia-form-sop").on('click',function(){
+                    var datosSop=$("#form_temasop").serialize()+"&persona_correo="+localStorage.getItem('email')+"&idapp="+localStorage.getItem('idapplication');
+                    enviaComentario(datosSop);
+                });
+                $( "#accordion" ).html(soporteDiv);
+                $(".line-bottom").css("border-bottom","2px solid "+localStorage.getItem('color'));
+//                $(".tema-sub").css("opacity",'0.8');
                 
+                $( "#accordion" ).accordion({
+                    collapsible: true,
+                     active: false
+                });
+                $("#accordion h3 ").css("background-color",localStorage.getItem('color_icon'));
+                $("#accordion h3").css("color",localStorage.getItem('color'));
+                $("#accordion h3").css("border","2px solid "+localStorage.getItem('color'));
+//                $("#accordion h3").css("margin","0.2em 0.2em");
+//                $("#accordion h3").css("padding","0.2em 0.2em");
+                
+                $(".tema-sub").css("color",localStorage.getItem('color_icon'));
+                $(".tema-sub").css("background-color",localStorage.getItem('color'));
+                $(".tema-sub").css("opacity","0.5");
+                $(".tema-inqu").css("width","100%");
+                $(".tema-inqu").css("height","50px");
+                $(".subtema-sub").css("padding","5px 5px");
+//                $(".ui-accordion .ui-accordion-content").css("margin",".2em .2em");
+                $(".ui-accordion .ui-accordion-content").css("margin-bottom","5px");
+                $(".ui-accordion .ui-accordion-content").css("padding","0.2em 0.1em");
+                $(".ui-accordion .ui-accordion-content").css("height","auto");
+                $(".ui-accordion .ui-accordion-content").css("overflow","hidden");
+                $(".btncompra").css("color",localStorage.getItem('color'))
+                $(".btncompra").css("border","1px solid "+localStorage.getItem('color'));
+                $(".btncompra").css({"margin-left":"auto","margin-right":"auto"});
                 break;
         }
 //        $('.tab-link').css('background',localStorage.getItem('color'));
@@ -165,7 +237,101 @@ console.log(data.content);
 //        f7.alert("asdf");
 //        $('.page').css('background',localStorage.getItem('color'));
     }
-   
+   function enviaMsjContacto(){
+       if($("#form-contacto").valid()){
+           var dataContacto=$("#form-contacto").serialize()+"&persona_correo="+localStorage.getItem('email')+"&idapp="+localStorage.getItem('idapplication');
+           $.ajax({//http://meew.co/dashmeew/
+            url: 'http://meew.co/dashmeew/index.php/site/enviaTemaContacto',
+//                url: 'http://localhost/meew/index.php/site/enviaTemaContacto',
+                dataType: 'json',
+                data:dataContacto,
+                type: 'post',
+                async:true,
+                crossDomain : true,
+                before: f7.showPreloader(),
+                success: function(data) {
+
+                    f7.hidePreloader();
+                    if(data.status=='exito'){
+                      f7.alert(data.msg);
+                    }
+                    else{
+                        f7.alert(data.msg);
+                    }
+                },
+                error:function(error){
+                    f7.hidePreloader();
+                    f7.alert("Error en comunicación con el servidor, revise la conexión a internet o inténtelo más tarde.");
+    //                    $('.list-block-label').html(JSON.stringify(error));
+                },
+
+            });
+       }
+    }
+    function enviaComentario(datosSop){
+        console.log(datosSop);
+        $.ajax({//http://meew.co/dashmeew/
+            url: 'http://meew.co/dashmeew/index.php/site/enviaTemaSoporte',
+//                url: 'http://localhost/meew/index.php/site/enviaTemaSoporte',
+            dataType: 'json',
+            data:datosSop,
+            type: 'post',
+            async:true,
+            crossDomain : true,
+            before: f7.showPreloader(),
+            success: function(data) {
+
+                f7.hidePreloader();
+                if(data.status=='exito'){
+                  f7.alert(data.msg);
+                }
+                else{
+                    f7.alert(data.msg);
+                }
+            },
+            error:function(error){
+                f7.hidePreloader();
+                f7.alert("Error en comunicación con el servidor, revise la conexión a internet o inténtelo más tarde.");
+//                    $('.list-block-label').html(JSON.stringify(error));
+            },
+
+        });
+    }
+    function initializeMap(dataM) { // define function
+        var latitud=dataM.latitud;
+        var longitud=dataM.longitud;
+        var mapProp = {
+          center: new google.maps.LatLng(latitud, longitud),
+          zoom: 5,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById('map-canvas'), mapProp);
+        var geocoder = new google.maps.Geocoder;
+        var infowindow = new google.maps.InfoWindow;
+        geocodeLatLng(geocoder, map, infowindow,latitud,longitud);
+    }
+    function geocodeLatLng(geocoder, map, infowindow,latitud,longitud) {
+        var latlng = {lat: parseFloat(latitud), lng: parseFloat(longitud)};
+        geocoder.geocode({'location': latlng}, function(results, status) {
+          if (status === 'OK') {
+            if (results[1]) {
+    //            console.log(JSON.stringify(results[1]["formatted_address"]));
+//                $("#address").text(results[1]["formatted_address"]);
+              map.setZoom(11);
+                var marker = new google.maps.Marker({
+                  position: latlng,
+                  map: map
+                });
+                infowindow.setContent(results[1].formatted_address);
+                infowindow.open(map, marker);
+            } else {
+                window.alert('No results found');
+            }
+            } else {
+              window.alert('Geocoder failed due to: ' + status);
+            }
+        });
+    }
     
     return {
         render: render
