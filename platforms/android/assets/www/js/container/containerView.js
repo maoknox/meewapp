@@ -1,4 +1,4 @@
-define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/container/contacto','hbs!js/container/soporte'], function(viewGallery,viewContainer,viewContacto,viewSoporte) {
+define(['hbs!js/container/galleryimgvids','hbs!js/container/galleryimg','hbs!js/container/galleryvids','hbs!js/container/container','hbs!js/container/contacto','hbs!js/container/soporte'], function(viewGalleryImgVids,viewGalleryImg,viewGalleryVids,viewContainer,viewContacto,viewSoporte) {
     var f7 = new Framework7({
         modalTitle: "Cortes del monte"
     });
@@ -35,7 +35,7 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
         switch(params.tipomod){
             case "1":
                 $('.titlecont').html(decodeURI(params.nombremod));
-                $('.container-page').html(viewGallery);
+                
         //        $('.textogallery').html("texto de la galería");
         //        $('.imagesgallery').html("imagesgallery");
         //        $('.videosgallery').html("videosgallery"); 
@@ -54,9 +54,12 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
                 var imagesIni='<ul id="photoslist" class="'+stClass+'">';
                 var imagesFin='<div class="clearleft"></div></ul>';
                 console.log(data.content);
+                var images=0;
+                var videos=0;
                 $.each(data.content,function(key,value){
-                    var shareA="";  
+                    var shareA=""; 
                     if(value.tipo_contenido==1){
+                        images++;
                         if(localStorage.getItem('compartir')==1){
                             shareA='<a href="javascript:window.plugins.socialsharing.share(\''+value.description+'\', \''+value.name+'\', \'http://meew.co/dashmeew'+value.file_name+'\', \'\');" style="color:#999"><span class="icon-share"></span><span class="tabbar-label">Compartir</span></a>';
                         }
@@ -69,6 +72,7 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
 //                        imagenes+='<div class="'+stClass+'"><a rel="gallery-1" href="http://meew.co/dashmeew'+value.file_name+'"  title="Photo title" class="swipebox"><img src="http://meew.co/dashmeew'+value.file_name+'" style="width: 100%"></a></div>';
                     }
                     else if(value.tipo_contenido==2){
+                        videos++
                         if(localStorage.getItem('compartir')==1){
                             shareA='<a href="javascript:window.plugins.socialsharing.share(\''+value.description+'\', \''+value.name+'\',\'\' ,\'http://meew.co/dashmeew'+value.url_video+'\);" style="color:#999"><i class="f7-icons size-25 color-custom">home</i><span class="tabbar-label">Compartir</span></a>';
                         }
@@ -78,6 +82,15 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
                             '<iframe style="width: 100%;height:250px" src="https://www.youtube.com/embed/'+value.url_video+'" frameborder="0" allowfullscreen></iframe>';
                     }
                 });
+                if(images>0 && videos>0){
+                    $('.container-page').html(viewGalleryImgVids);
+                }
+                else if(images>0){
+                    $('.container-page').html(viewGalleryImg);
+                }
+                else if(videos>0){
+                    $('.container-page').html(viewGalleryVids);
+                }
                 var imagesEnd=imagesIni+imagenes+imagesFin;
                 $('.imagesgallery').html(imagesEnd);
                 $('.videosgallery').html(videos); 
@@ -244,7 +257,7 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
         console.log(datosSop);
         $.ajax({//http://meew.co/dashmeew/
 //            url: 'http://meew.co/dashmeew/index.php/site/enviaTemaSoporte',
-                url: 'http://localhost/meew/index.php/site/enviaTemaSoporte',
+                url: 'http://meew.co/dashmeew/index.php/site/enviaTemaSoporte',
             dataType: 'json',
             data:datosSop,
             type: 'post',
