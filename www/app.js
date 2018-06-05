@@ -175,24 +175,7 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
                 f7.hidePreloader();
                 success=1;
                 console.log('done, access token: ' + access_token);
-//                    
-                
-                
-            },
-            denied: function() {
-                f7.hidePreloader();
-                    console.log('user denied');
-                    
-            },
-            timeout: function(){
-                f7.hidePreloader();
-                console.log('a timeout has occurred, probably a bad internet connection');
-            },
-            complete: function(access_token) {
-                f7.hidePreloader(); 
-                    console.log('window closed');
-                    
-                    FacebookInAppBrowser.getInfo(function(response) {
+                  FacebookInAppBrowser.getInfo(function(response) {
                     if(response) {
                         localStorage.setItem("datafb",response);
                         console.log(response);
@@ -239,7 +222,22 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
 
                         });
                     }
-                }); 
+                });  
+            },
+            denied: function() {
+                f7.hidePreloader();
+                    console.log('user denied');
+                    
+            },
+            timeout: function(){
+                f7.hidePreloader();
+                console.log('a timeout has occurred, probably a bad internet connection');
+            },
+            complete: function(access_token) {
+                f7.hidePreloader(); 
+                    console.log('window closed');
+                    
+                    
             },
             userInfo: function(userInfo) {
                 dataUser=userInfo;
