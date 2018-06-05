@@ -34,28 +34,20 @@ define('app',['js/router','js/contactModel'], function(Router,Contact) {
 //            template7Pages: true
 
     }); 
-//    f7.alert('Body','Título',function(){
-//        f7.alert('You have clicked the button!!!')
-//    });
-if (typeof FCMPlugin != 'undefined') {
-   FCMPlugin.onNotification(function(data){
-//            navigator.vibrate([1000]); 
-        if(data.wasTapped){
-            f7.alert(data.body,data.title);
-        }else{ 
-            f7.alert(data.body,data.title);
-        }
-    });
-}
+    if (typeof FCMPlugin != 'undefined') {
+       FCMPlugin.onNotification(function(data){
+    //            navigator.vibrate([1000]); 
+            if(data.wasTapped){
+                f7.alert(data.body,data.title);
+            }else{ 
+                f7.alert(data.body,data.title);
+            }
+        });
+    }
 
 //    
     var ret={
         f7: f7
-//        mainView: mainView,
-//        view1:view1,
-//        view2:view2,
-////        view3:view3,
-//        router: Router
     };
     //Abre link de términos y condiciones
     $(".link-tycond").on("click",function(){
@@ -63,10 +55,11 @@ if (typeof FCMPlugin != 'undefined') {
         $(".popup-tycond .list-block-contact").html(localStorage.getItem('tycond'));
         f7.popup('.popup-tycond',false);
     });
-    
+    //abre página de términos y condiciones
     $$('.popback-lintycond').on('click', function () {
         f7.closeModal(".popup-tycond",false);
     });
+    //abre página de formulario de perfil de usuario
     $(".link-perfil").on("click",function(){
         $('.popup-dataperfil #inputs-perfil').html("");
         var usuario=JSON.parse(localStorage.getItem('usuarioreg'));
@@ -121,21 +114,20 @@ if (typeof FCMPlugin != 'undefined') {
         $(".btnmodifdata").css({"margin-left":"auto","margin-right":"auto"});
        f7.popup('.popup-dataperfil',false);
     });
+    //al hacer clic en modificar datos, llama a función modificaDatos
     $(".btnmodifdata").on("click",function(){
         modificaDatos();
     });
+    //cierra popup de formulario de perfil
     $$('.popback-linkperfil').on('click', function () {
         f7.closeModal(".popup-dataperfil",false);
     });
-//    $(".loadcontent").on('click',function(){
-////        console.log("load");
-//    });
     localStorage.setItem("pagina",0);
-    localStorage.setItem('email', "");
     var email=localStorage.getItem('email');
     
-//    f7.alert(email);
+
     var ini=false;
+    //si no existe email, abre ventana para registro o login, de lo contrario carga contenido de aplicación
     if(email=="" || email==null || email.length==0){
         f7.popup('.popup-about',false);
     }
@@ -145,6 +137,7 @@ if (typeof FCMPlugin != 'undefined') {
         cargaEstilos(data.image,data.color_icon,data.color);
         cargaMenuBottom(JSON.stringify(data.contmb),data.color_icon,data.color);
     }
+    //botón para compartir en facebook
     $$(".btnsharefb").on("click",function(){
         console.log("share");
         window.plugins.socialsharing.share('Message, subject, image and link', 'The subject', 'http://meew.co/dashmeew/uploads/5241PresentacionExcelsoSantander2.jpg', 'http://www.x-services.nl');
@@ -152,38 +145,23 @@ if (typeof FCMPlugin != 'undefined') {
 //        window.plugins.socialsharing.shareViaFacebook('Message via Facebook', "https://i.ytimg.com/vi/URRYB6XNt-w/maxresdefault.jpg", "http://meew.co/dashmeew/uploads/1251-Presentacion%20Excelso%20Cundinamarca.jpg", function() {console.log('share ok')}, function(errormsg){alert(errormsg)});
 //        window.plugins.socialsharing.shareViaTwitter('Message and link via Twitter', null, 'http://meew.co/dashmeew/uploads/1251-Presentacion%20Excelso%20Cundinamarca.jpg')
     });
-//    var options = {
-//      message: 'share this', // not supported on some apps (Facebook, Instagram)
-//      subject: 'the subject', // fi. for email
-//      files: ['', ''], // an array of filenames either locally or remotely
-//      url: 'http://meew.co/dashmeew/uploads/1251-Presentacion%20Excelso%20Cundinamarca.jpg',
-//      chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title
-//    }
-
-//    var onSuccess = function(result) {
-//      console.log("Share completed? " + result.completed); // On Android apps mostly return false even while it's true
-//      console.log("Shared to app: " + result.app); // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
-//    }
-
-//    var onError = function(msg) {
-//      console.log("Sharing failed with message: " + msg);
-//    }
+    //función para cerrar sesión
     $$('#cerrarSesion').on('click',function(){
-//        if (!FacebookInAppBrowser.exists(FacebookInAppBrowser.settings.appId) || !FacebookInAppBrowser.exists(window.localStorage.getItem('facebookAccessToken')) || window.localStorage.getItem('facebookAccessToken') === null) {
-                FacebookInAppBrowser.logout(function() {
-                    f7.popup('.popup-about',false);
-                });
-//        }
-//        else{
-            localStorage.removeItem("email");
-            navigator.app.exitApp();
-//        }
+        FacebookInAppBrowser.logout(function() {
+            f7.popup('.popup-about',false);
+        });
+        localStorage.removeItem("datafb");
+        localStorage.removeItem("email");
+        navigator.app.exitApp();
+
     });
+    //función para realizar login por facebook
     $('.loginfb').on('click',function(){
         console.log("entra a login facebook");
         iniciaSesionFb();
         
     });
+    //función que llama a servicio para iniciar sesión
     function iniciaSesionFb(){
         f7.showPreloader();
         var success="";
@@ -219,86 +197,66 @@ if (typeof FCMPlugin != 'undefined') {
                         localStorage.setItem("datafb",response);
                         console.log(response);
                         response.idapp=localStorage.getItem('idapplication');
-        $.ajax({//http://meew.co/dashmeew/
-//                url: 'http://meew.co/dashmeew/index.php/site/loginPlatformMovile',
-                url: url+'/index.php/site/loginMFBook',
-                dataType: 'json',
-                data:response,
-                type: 'post',
-                async:true,
-//                crossDomain : true,
-                before: f7.showPreloader(),
-                success: function(data) {
-//                   
-                    
-                    f7.hidePreloader();
-                    if(data.status=='exito'){
-                        console.log(JSON.stringify(data)+"------------------------------------------------------------------");
-//                        $('.toolbar').css('background',data.color);
-//                        $('.navbar').css('background',data.color);
-//                        $('.subnavbar').css('background',data.color);
-                        localStorage.setItem('dataapp', JSON.stringify(data));
-                        localStorage.setItem('tycond', data.tycond);
-                        localStorage.setItem('usuarioreg', JSON.stringify(data.usuario));
-                        localStorage.setItem('content', JSON.stringify(data.contplantilla));
-                        localStorage.setItem('email', data.usuario.email);
-                        localStorage.setItem('personid', data.usuario.personid);
-                        localStorage.setItem('personanombre', data.usuario.nombre);
-                        localStorage.setItem('token', data.usuario.token);
-                        localStorage.setItem("idplantilla", data.idplantilla);
-                        f7.closeModal(".login-screen",false);
-                        cargaEstilos(data.image,data.color_icon,data.color);
-                        cargaMenuBottom(JSON.stringify(data.contmb),data.color_icon,data.color);
-//                        console.log(localStorage.getItem("personanombre")+"---------------------");
-                        $(".user-icon").append('<span class="icon-user size-29"></span>');
-                        $(".tyc-icon").append('<span class="icon-book size-29"></span>');
-                        $(".cerrar-icon").append('<span class="icon-switch size-29"></span>');
-                        $(".men-lat").css("color",data.color);
-                        $(".border_lat").css("border-top","2px solid "+data.color);
-                        Router.load("list");
-                        $("#nombre-usuario").text(localStorage.getItem('personanombre'));
-//                        Router.init();
+                        $.ajax({
+                            url: url+'/index.php/site/loginMFBook',
+                            dataType: 'json',
+                            data:response,
+                            type: 'post',
+                            async:true,
+            //                crossDomain : true,
+                            before: f7.showPreloader(),
+                            success: function(data) {
+                                f7.hidePreloader();
+                                if(data.status=='exito'){
+                                    localStorage.setItem('dataapp', JSON.stringify(data));
+                                    localStorage.setItem('tycond', data.tycond);
+                                    localStorage.setItem('usuarioreg', JSON.stringify(data.usuario));
+                                    localStorage.setItem('content', JSON.stringify(data.contplantilla));
+                                    localStorage.setItem('email', data.usuario.email);
+                                    localStorage.setItem('personid', data.usuario.personid);
+                                    localStorage.setItem('personanombre', data.usuario.nombre);
+                                    localStorage.setItem('token', data.usuario.token);
+                                    localStorage.setItem("idplantilla", data.idplantilla);
+                                    f7.closeModal(".login-screen",false);
+                                    cargaEstilos(data.image,data.color_icon,data.color);
+                                    cargaMenuBottom(JSON.stringify(data.contmb),data.color_icon,data.color);
+                                    $(".user-icon").append('<span class="icon-user size-29"></span>');
+                                    $(".tyc-icon").append('<span class="icon-book size-29"></span>');
+                                    $(".cerrar-icon").append('<span class="icon-switch size-29"></span>');
+                                    $(".men-lat").css("color",data.color);
+                                    $(".border_lat").css("border-top","2px solid "+data.color);
+                                    Router.load("list");
+                                    $("#nombre-usuario").text(localStorage.getItem('personanombre'));
+                                }
+                                else{
+                                    f7.alert(data.msg);
+                                }
+                            },
+                            error:function(error){
+                                f7.hidePreloader();
+                                f7.alert("Error en comunicación con el servidor, revise la conexión a internet o inténtelo más tarde.");
+                            },
+
+                        });
                     }
-                    else{
-                        f7.alert(data.msg);
-                    }
-                },
-                error:function(error){
-                    f7.hidePreloader();
-                    f7.alert("Error en comunicación con el servidor, revise la conexión a internet o inténtelo más tarde.");
-                    console.log(JSON.stringify(error));
-//                    $('.list-block-label').html(JSON.stringify(error));
-                },
-                
-            });
-                    }
-                });
-//                f7.closeModal(".login-screen",false);
-               
-                        
+                }); 
             },
             userInfo: function(userInfo) {
                 dataUser=userInfo;
                 f7.hidePreloader();
-//                    if(userInfo) {
-//                            console.log("------"+JSON.stringify(userInfo));
-//                    } else {
-//                            console.log('no user info');
-//                    }
             },
             error:function(){
                 f7.hidePreloader();
             }
         });
-//        console.log(localStorage.getItem("datafb"));
     }
-    
+    //añade vista principal
     var mainView = f7.addView('.view-main', {
         dynamicNavbar: true
     });
     ret['mainView']=mainView;
     
-    
+    //crea validación de campos de login, usuario y contraseña
     $$('.close-popupi').on('click', function () {
         $("#form-login").validate({
             rules: {
@@ -313,8 +271,8 @@ if (typeof FCMPlugin != 'undefined') {
         f7.loginScreen(".login-screen",false);
         f7.closeModal(".popup-about",false);
     });
-    $$(".cambia-clave").on('click',function(){     
-        
+    //creación de formulario y validación para cambiar clave
+    $$(".cambia-clave").on('click',function(){ 
         f7.popup('.popup-cl',false);
         $('.popup-cl #inputs-cl').html("");
         $("#form-camclave").validate();
@@ -324,13 +282,6 @@ if (typeof FCMPlugin != 'undefined') {
         $(".btncl").css("border","1px solid "+localStorage.getItem('color'));
         $(".btncl").css({"margin-left":"auto","margin-right":"auto"});
         $(".line-input").css("border","1px solid "+localStorage.getItem('color'));
-//        console.log($("#passwdregc").val()+"-------------");
-//        $("#passwdregc").rules("add",{
-//            required:true,
-//            messages:{
-//                required:"Campo requerido"
-//            }
-//        });
         $("#passwdregc").rules("add",{
             required: true,
             pwcheck: true,
@@ -355,14 +306,13 @@ if (typeof FCMPlugin != 'undefined') {
                 && /\d/.test(value) // has a digit
          });
     });
-    
+    //función que llama el servicio para cambiar clave
     $$(".envia_clave").on("click",function(){
         if ($("#form-camclave").valid()) {
             var formClave = f7.formToJSON('#form-camclave');
             formClave.persona_correo=localStorage.getItem('email');
             console.log(formClave);
-            $.ajax({//http://meew.co/dashmeew/
-//                url: 'http://meew.co/dashmeew/index.php/site/modificaDatosApp',
+            $.ajax({
                 url: url+'/index.php/site/cambiaClaveMovile',
                 dataType: 'json',
                 data:formClave,
@@ -383,26 +333,26 @@ if (typeof FCMPlugin != 'undefined') {
                 error:function(error){
                     f7.hidePreloader();
                     f7.alert("Error en comunicación con el servidor, revise la conexión a internet o inténtelo más tarde.");
-//                    $('.list-block-label').html(JSON.stringify(error));
                 },
                 
             });
         }
     });
+    //cierra el popup del formulario de cambio de clave
     $$(".popback-cl").on('click',function(){      
         f7.closeModal('.popup-cl',false);
     });
     
-//    popback-register
+//    cierra el popup de formulario de registro
     $$('.popback-register').on('click', function () {
         f7.loginScreen(".popup-about",false);
         f7.closeModal(".popup-register",false);
     });
+    //función que llama el servicio para modificar datos
     function modificaDatos(){
         if ($("#form-perf").valid()) {
             var formModifData = f7.formToJSON('#form-perf');
-            $.ajax({//http://meew.co/dashmeew/
-//                url: 'http://meew.co/dashmeew/index.php/site/modificaDatosApp',
+            $.ajax({
                 url: url+'/index.php/site/modificaPerfilMovile',
                 dataType: 'json',
                 data:formModifData,
@@ -423,12 +373,12 @@ if (typeof FCMPlugin != 'undefined') {
                 error:function(error){
                     f7.hidePreloader();
                     f7.alert("Error en comunicación con el servidor, revise la conexión a internet o inténtelo más tarde.");
-//                    $('.list-block-label').html(JSON.stringify(error));
                 },
                 
             });
         }
     }
+    //función que llama el servicio para realizar login con usuario y contraseña
     function loginMeew(){
         if ($("#form-login").valid()) {
             contact = new Contact();
@@ -445,16 +395,8 @@ if (typeof FCMPlugin != 'undefined') {
                 crossDomain : true,
                 before: f7.showPreloader(),
                 success: function(data) {
-//                    Router.init();
-//                    console.log(JSON.stringify(data));
-//                    var retrivedContent=localStorage.getItem('content');
-//                    console.log(JSON.parse(retrivedContent));
-                    
                     f7.hidePreloader();
                     if(data.status=='exito'){
-//                        $('.toolbar').css('background',data.color);
-//                        $('.navbar').css('background',data.color);
-//                        $('.subnavbar').css('background',data.color);
                         localStorage.setItem('dataapp', JSON.stringify(data));
                         localStorage.setItem('tycond', data.tycond);
                         localStorage.setItem('usuarioreg', JSON.stringify(data.usuario));
@@ -467,7 +409,6 @@ if (typeof FCMPlugin != 'undefined') {
                         f7.closeModal(".login-screen",false);
                         cargaEstilos(data.image,data.color_icon,data.color);
                         cargaMenuBottom(JSON.stringify(data.contmb),data.color_icon,data.color);
-//                        console.log(localStorage.getItem("personanombre")+"---------------------");
                         $(".user-icon").append('<span class="icon-user size-29"></span>');
                         $(".tyc-icon").append('<span class="icon-book size-29"></span>');
                         $(".cerrar-icon").append('<span class="icon-switch size-29"></span>');
@@ -475,7 +416,6 @@ if (typeof FCMPlugin != 'undefined') {
                         $(".border_lat").css("border-top","2px solid "+data.color);
                         Router.load("list");
                         $("#nombre-usuario").text(localStorage.getItem('personanombre'));
-//                        Router.init();
                     }
                     else{
                         f7.alert(data.msg);
@@ -484,12 +424,12 @@ if (typeof FCMPlugin != 'undefined') {
                 error:function(error){
                     f7.hidePreloader();
                     f7.alert("Error en comunicación con el servidor, revise la conexión a internet o inténtelo más tarde.");
-//                    $('.list-block-label').html(JSON.stringify(error));
                 },
                 
             });
         }
     }
+    //función que se encarga de crear el menú inferior, cargar estilos y menús en general
     function cargaMenuBottom(contmb,colorIcon,color){
         var number=1;
         var contmbAux=JSON.parse(contmb);
@@ -520,41 +460,26 @@ if (typeof FCMPlugin != 'undefined') {
                 
             window["view"+number] = f7.addView('#view-'+number,{dynamicNavbar:true});
             $('.tab-link').css('color',colorIcon);
-//            $('.tab-link').click(function(){
-//                    $(this).parent().addClass('active').siblings().removeClass('active')	
-//            });
-//            $('.tab-link .active').css('color','#000');
             ret["view"+number]=window["view"+number];
             $('.view-1').css('color',"#fff");
             $('.view-1').on('click',function(){
                 $('.tab-link').css('color',colorIcon);
                 $('.view-1').css('color',"#fff");
             });
-            
-//            $('.view-1').on('click',function(){
-//                $('.tab-link').css('color',colorIcon);
-//                $(".view-1").css('color',"#fff");
-//                mainView.router.back();
-//            });
-            
             $(".bars-pers").css("color",colorIcon);
             $(".toolbar-inner").css("background-color",color);
             $(".toolbar-inner").css("opacity","0.6");
             
             creaEvento(number,v,colorIcon,color);
-//            $('.pages').css('background',color);
-//            $('.page').css('background',color);
-//            $('a.swiper-read_more').css('color',color);
         });
         
     }
+    //función que asocia las funciones al menú inferior
     function creaEvento(n,v,colorIcon,color){
         $(".view-"+n).on('click',function(){
             console.log(colorIcon);
             $('.tab-link').css('color',colorIcon);
-//                console.log("pasa a vista "+n);
                 $(".view-"+n).css('color',"#fff");
-//                $('.toolbar').css('background',color);
                 if(n==1){
                     Router.load("list");
                 }else{
@@ -562,6 +487,7 @@ if (typeof FCMPlugin != 'undefined') {
                 }
             });
     }
+    //función que carga estilos generados en el dashboard
     function cargaEstilos(image,colorIcon,color){
         $(".main-page").css("background",'url(http://meew.co/dashmeew/'+image+') no-repeat center center');
         $(".main-page").css("background-attachment",'scroll');
@@ -577,18 +503,17 @@ if (typeof FCMPlugin != 'undefined') {
         $(".main-page").css("background-size",'cover');
         $('.view').css('background-color',color);
         $('.views').css('background-color',color);
-//        $(".bars-pers").css('color',colorIcon);
-//        $('.navbar .toolbar .subnavbar').css('background',color);
     }
+    //cerrar modal de formulario de registro
     $$('.link-volver').on('click', function () {
         f7.popup('.popup-about',false); 
         f7.closeModal(".popup-register",false);  
     });
+    //link que crea el formulario y validación del registro del usuario en la aplicación
     $$('.link-register').on('click', function () {       
         f7.popup('.popup-register',false); 
         $('.popup-register #inputs-reg').html("");
         $("#fomr-serv").validate();
-        console.log(localStorage.getItem('campos_form'));
         $.each(JSON.parse(localStorage.getItem('campos_form')),function(key,value){
             if(value.activo==1){
                 if(key!='id_rango_edad' && key!='id_genero' && key!='politicas_privacidad_activo'){
@@ -676,46 +601,41 @@ if (typeof FCMPlugin != 'undefined') {
                 $(".line-input").css("border","1px solid "+localStorage.getItem('color'));
             }
          });
-        
-        
         $$(".creaCuenta").on("click", registerUser);
         f7.closeModal(".popup-about",false);  
     });
+    
     $$('.open-services').on('click', function () {
         f7.popup('.popup-services');
     });var mainView = f7.addView('.view-main', {
         dynamicNavbar: true
     }); 
-    
+    //programación del botón volver del teléfono (android)
     document.addEventListener("backbutton", onBackKeyDown, false); 
+    //adiciona la vista a framework7
     var view1=f7.addView('#view-1',{dynamicNavbar:true});
     ret['view1']=view1;
     ret['router']=Router;
+    
     f7.onPageInit('*',function(page){
         $$(page.navbarInnerContainer).find('.envia_cserv').on('click',function(){ 
             var formData = f7.formToJSON('#fomr-serv');
             f7.alert(JSON.stringify(formData));
         });
     });
+    //función para programar botón volver
     function onBackKeyDown(e){
         mainView.activePage.name="apphome";
         mainView.router.back();
     }
+    //función que consume servicio para registrar al usuario e iniciar sesión
     function registerUser(){
         if ($("#fomr-serv").valid()) {
             contact = new Contact();
             var formInput = $('#fomr-serv').serialize()+"&idapplication="+localStorage.getItem('idapplication');
-//            contact.setValues(formInput);
-//            f7.alert(contact.Usuario["accept"]);
-//            return false;
-//            if (!contact.validate()) {
-//                f7.alert("Debe aceptar los términos y condiciones");
-//                return;
-//            }
             var datos=formInput;
             $.ajax({
                 url: url+'/index.php/site/registerPlatformMovile',
-//                url: 'http://meew.co/dashmeew/index.php/site/registerPlatformMovile',
                 dataType: 'json',
                 data:datos,
                 type: 'post',
@@ -737,7 +657,6 @@ if (typeof FCMPlugin != 'undefined') {
                         f7.closeModal(".popup-register",false);
                         cargaEstilos(data.image,data.color_icon,data.color);
                         cargaMenuBottom(JSON.stringify(data.contmb),data.color_icon,data.color);
-//                        console.log(localStorage.getItem("personanombre")+"---------------------");
                         $(".user-icon").append('<span class="icon-user size-29"></span>');
                         $(".tyc-icon").append('<span class="icon-book size-29"></span>');
                         $(".cerrar-icon").append('<span class="icon-switch size-29"></span>');
@@ -745,7 +664,6 @@ if (typeof FCMPlugin != 'undefined') {
                         $(".border_lat").css("border-top","2px solid "+data.color);
                         Router.load("list");
                         $("#nombre-usuario").text(localStorage.getItem('personanombre'));
-//                        Router.init();
 
                     }
                     else if(data.status=='novalidate'){

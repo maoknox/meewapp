@@ -9,32 +9,6 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
             idmods.push(v.id_modulo_app);
        });
        var dataSl=[];
-//       $.ajax({
-////                url: 'http://meew.co/dashmeew/index.php/site/dataContentSlider',
-//                url: 'http://localhost/meew/index.php/site/dataContentSlider',
-//                dataType: 'json',
-//                data:{idmods:idmods},
-//                type: 'post',
-//                async:true,
-//                crossDomain : true,
-////                before: f7.showPreloader(),
-//                success: function(data) {
-//                    console.log(JSON.stringify(data));
-//                    console.log(data.content);
-//                    dataSl=data.content;
-////                    $('.titlecont').html(data.content.nombre_modulo);
-////                    $('.container-page').html(data.content.texto_html);
-////console.log(data.content.texto_html);
-//                },
-//                error:function(error){
-//                    f7.hidePreloader();
-//                    $('.main-page').html(JSON.stringify(error));
-//                    f7.alert("error en la comunicación con el servidor");
-//                },
-//            });
-
-
-
         var iniContent='<div class="page-content-swiper" >'+
             '<div class="swiper-container">'+
             '<div class="swiper-wrapper">';
@@ -45,11 +19,6 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
             '</div>';
     var allContent=iniContent+endContent;
         $$('.main-page').html(allContent);
-//        var mySwiper = f7.swiper.create('.swiper-container', {
-//            speed: 400,
-//            spaceBetween: 100,
-//            pagination:'.swiper-pagination'
-//        });
         var mySwiper = new Swiper('.swiper-container', {
             autoplay:5000,
             speed: 400,
@@ -59,10 +28,8 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
             loop:true
         });
     var contentM="";
-//    console.log(retrivedContent+"--------------------------------------------------------------------");
         $.each(JSON.parse(retrivedContent),function(k,v){
             contentM=' <div class="swiper-slide">'+
-//                        '<div class="content-block-title">'+v.nombre_modulo+'</div>'+
                         '<div class="content-block">'+
                         '<span>'+v.nombre_modulo+'</span>'+
                         '<span class="subtitle">'+v.texto_descripcion+'</span>'+
@@ -70,15 +37,10 @@ define(['hbs!js/container/gallery','hbs!js/container/container','hbs!js/containe
                         '</div>'+
                      '</div>';
             mySwiper.appendSlide(contentM);
-//            idmods.push(v.id_modulo_app);
-//            dataSl
        });
        mySwiper.startAutoplay();
        mySwiper.init();
-//       console.log(dataSl);
       $('.swiper_read_more').css('color',localStorage.getItem('color_icon'));
-//      $('.page').css('background',localStorage.getItem('color'));
-//        f7.alert("asdf");
 
     }	
     return {

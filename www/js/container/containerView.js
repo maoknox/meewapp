@@ -13,32 +13,21 @@ define(['hbs!js/container/galleryimgvids','hbs!js/container/galleryimg','hbs!js/
                 async:true,
                 before: f7.showPreloader(),
                 success: function(data) {
-//                    $('.titlecont').html(data.content.nombre_modulo);
-//                    $('.container-page').html(data.content);
 
                     f7.hidePreloader();
                     $('.navbar-inner').css('background-color',localStorage.getItem('color'));
                     cargaContenido(data,params);
-//console.log(data.content.texto_html);
                 },
                 error:function(error){
                     f7.hidePreloader();
                     f7.alert("error en la comunicación con el servidor");
                 },
             });
-//            console.log(params.tipomod);
-//        
-       
-//            $('.informacion-page').html(viewTemplate());
     } 
     function cargaContenido(data,params){
         switch(params.tipomod){
             case "1":
                 $('.titlecont').html(decodeURI(params.nombremod));
-                
-        //        $('.textogallery').html("texto de la galería");
-        //        $('.imagesgallery').html("imagesgallery");
-        //        $('.videosgallery').html("videosgallery"); 
                 var imagenes="";
                 var videos="";
                 var stClass="photo_gallery_1";
@@ -69,7 +58,6 @@ define(['hbs!js/container/galleryimgvids','hbs!js/container/galleryimg','hbs!js/
                                 '</a>'+
                                 shareA+
                                 '</li>';
-//                        imagenes+='<div class="'+stClass+'"><a rel="gallery-1" href="http://meew.co/dashmeew'+value.file_name+'"  title="Photo title" class="swipebox"><img src="http://meew.co/dashmeew'+value.file_name+'" style="width: 100%"></a></div>';
                     }
                     else if(value.tipo_contenido==2){
                         videos++
@@ -97,14 +85,9 @@ define(['hbs!js/container/galleryimgvids','hbs!js/container/galleryimg','hbs!js/
                 $(".content-block-tabs").css("background-color", localStorage.getItem('color'));
                 $(".button.active").css("background",localStorage.getItem('color'));
                 $(".button.active").css("opacity","0.6");
-//                $(".container-page").css("height","80%");
-//                f7.alert("asdf");
             break;
             case "2":
                 $('.titlecont').html(decodeURI(params.nombremod));
-        //        $('.textogallery').html("texto de la galería");
-        //        $('.imagesgallery').html("imagesgallery");
-        //        $('.videosgallery').html("videosgallery"); 
                 var imagenes="";
                 var videos="";
                 $.each(data.content,function(key,value){
@@ -117,7 +100,6 @@ define(['hbs!js/container/galleryimgvids','hbs!js/container/galleryimg','hbs!js/
                 
                 break;
             case "3":
-//                var textohtml='<div class="page-content">'+data.content+'</div>';
                 $('.container-page').html(viewContainer);
                 $('.page-content-articulo').html(data.content);
                 break;
@@ -152,7 +134,6 @@ define(['hbs!js/container/galleryimgvids','hbs!js/container/galleryimg','hbs!js/
                         required:"Campo requerido",
                     }
                 });
-                console.log(data.content);
                 initializeMap(data.content);
                 $(".btncompra").css("color",localStorage.getItem('color'))
                 $(".btncompra").css("border","1px solid "+localStorage.getItem('color'));
@@ -182,7 +163,6 @@ define(['hbs!js/container/galleryimgvids','hbs!js/container/galleryimg','hbs!js/
                 });
                 $( "#accordion" ).html(soporteDiv);
                 $(".line-bottom").css("border-bottom","2px solid "+localStorage.getItem('color'));
-//                $(".tema-sub").css("opacity",'0.8');
                 
                 $( "#accordion" ).accordion({
                     collapsible: true,
@@ -191,8 +171,6 @@ define(['hbs!js/container/galleryimgvids','hbs!js/container/galleryimg','hbs!js/
                 $("#accordion h3 ").css("background-color",localStorage.getItem('color_icon'));
                 $("#accordion h3").css("color",localStorage.getItem('color'));
                 $("#accordion h3").css("border","2px solid "+localStorage.getItem('color'));
-//                $("#accordion h3").css("margin","0.2em 0.2em");
-//                $("#accordion h3").css("padding","0.2em 0.2em");
                 
                 $(".tema-sub").css("color",localStorage.getItem('color_icon'));
                 $(".tema-sub").css("background-color",localStorage.getItem('color'));
@@ -200,23 +178,14 @@ define(['hbs!js/container/galleryimgvids','hbs!js/container/galleryimg','hbs!js/
                 $(".tema-inqu").css("width","100%");
                 $(".tema-inqu").css("height","50px");
                 $(".subtema-sub").css("padding","5px 5px");
-//                $(".ui-accordion .ui-accordion-content").css("margin",".2em .2em");
                 $(".ui-accordion .ui-accordion-content").css("margin-bottom","5px");
                 $(".ui-accordion .ui-accordion-content").css("padding","0.2em 0.1em");
                 $(".ui-accordion .ui-accordion-content").css("height","auto");
                 $(".ui-accordion .ui-accordion-content").css("overflow","hidden");
-//                $('.temasoporte').html(opciones);
                 
                 break;
                 
         }
-        
-//        $('.page').css('background',localStorage.getItem('color'));
-//        $('.button').css('background',localStorage.getItem('color'));
-//        $('.tab-link').css({'background':localStorage.getItem('color'),'color':localStorage.getItem('color_icon')});
-//        $('.buttons-row').on('click',function(){
-//            console.log("sadsf");
-//        });
         
     }
     function compartir(){
@@ -255,7 +224,7 @@ define(['hbs!js/container/galleryimgvids','hbs!js/container/galleryimg','hbs!js/
     }
     function enviaComentario(datosSop){
         console.log(datosSop);
-        $.ajax({//http://meew.co/dashmeew/
+        $.ajax({
 //            url: 'http://meew.co/dashmeew/index.php/site/enviaTemaSoporte',
                 url: 'http://meew.co/dashmeew/index.php/site/enviaTemaSoporte',
             dataType: 'json',
@@ -277,7 +246,6 @@ define(['hbs!js/container/galleryimgvids','hbs!js/container/galleryimg','hbs!js/
             error:function(error){
                 f7.hidePreloader();
                 f7.alert("Error en comunicación con el servidor, revise la conexión a internet o inténtelo más tarde.");
-//                    $('.list-block-label').html(JSON.stringify(error));
             },
 
         });
@@ -300,8 +268,6 @@ define(['hbs!js/container/galleryimgvids','hbs!js/container/galleryimg','hbs!js/
         geocoder.geocode({'location': latlng}, function(results, status) {
           if (status === 'OK') {
             if (results[1]) {
-    //            console.log(JSON.stringify(results[1]["formatted_address"]));
-//                $("#address").text(results[1]["formatted_address"]);
               map.setZoom(11);
                 var marker = new google.maps.Marker({
                   position: latlng,
